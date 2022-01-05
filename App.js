@@ -7,10 +7,11 @@ import CartScreen from "./src/screens/CartScreen";
 const navigator = createStackNavigator(
   {
     HomeScreen: HomeScreen,
-    SignupScreen:SignupScreen
+    SignupScreen:SignupScreen,
+    CartScreen:CartScreen,
   },
   {
-    initialRouteName: "SignupScreen",
+    initialRouteName: "CartScreen",
     defaultNavigationOptions: {
       title: "App",
     },
