@@ -14,6 +14,6 @@ const HomeScreen = () => {
 
 }
 
-const Style = StyleSheet.create({});
+const styles = StyleSheet.create({});
 
 export default HomeScreen;
