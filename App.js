@@ -9,6 +9,14 @@ import WeeklyDealScreen from "./src/screens/WeeklyDealScreen";
 import FavouriteScreen from "./src/screens/FavouriteScreen";
 import SortingScreen from "./src/screens/SortingScreen";
 import FilterScreen from "./src/screens/FilterScreen";
+import Fruits from "./src/screens/Fruits";
+import Frozen from './src/screens/Frozen';
+import Meat from "./src/screens/Meat";
+import Vegetables from "./src/screens/Vegetables";
+import Bakery from "./src/screens/Bakery";
+import Personal from "./src/screens/Personal";
+
+
 
 const navigator = createStackNavigator(
   {
@@ -21,11 +29,18 @@ const navigator = createStackNavigator(
     FavouriteScreen:FavouriteScreen,
     SortingScreen:SortingScreen,
     FilterScreen:FilterScreen,
+    Vegetables : Vegetables,
+    Fruits : Fruits,
+    Meat: Meat,
+    Frozen : Frozen,
+    Bakery : Bakery,
+    Personal : Personal,
   },
   {
     initialRouteName: "FilterScreen",
     defaultNavigationOptions: {
-      title: "App",
+      title: "Home",
+      header: false
     },
   }
 );
