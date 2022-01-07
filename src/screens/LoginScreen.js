@@ -9,7 +9,7 @@ import {
   Alert
 } from "react-native";
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -42,13 +42,13 @@ const LoginScreen = () => {
         <Text style={styles.forgotButton}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn}>
+      <TouchableOpacity style={styles.loginBtn} onPress={() => navigation.navigate("HomeScreen")}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
 
       <View style={styles.signUpArea}>
         <Text style={{flex:2}}>Don't have any account?</Text>
-        <TouchableOpacity style={{flex:1}} onPress={() => Alert.alert("It's signup time")}>
+        <TouchableOpacity style={{flex:1}} onPress={() => navigation.navigate("SignupScreen")}>
           <Text style={styles.signUpText}>SignUp</Text>
         </TouchableOpacity>
       </View>

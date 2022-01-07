@@ -1,12 +1,12 @@
 import React,{useEffect, useState} from "react";
 import { View,Text, StyleSheet,Image,ScrollView,TextInput, Button } from "react-native";
 
-const SignupScreen = () => {
+const SignupScreen = ({navigation}) => {
 
 
     return(
 
-            <View style={{marginTop:20}}>
+            <View style={{marginTop:50}}>
                 <Image source={require('../../assets/GrocerFreshLogo.png')} style={styles.img}/>
                 <Text style={{fontSize:20,alignSelf:'center',color:'green',marginTop:10}}> Sign Up </Text>
                 <View>

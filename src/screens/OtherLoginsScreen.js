@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 
-const OtherLoginsScreen = () => {
+const OtherLoginsScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image
@@ -17,7 +17,7 @@ const OtherLoginsScreen = () => {
         style={styles.img}
       />
 
-      <TouchableOpacity style={styles.signUp}>
+      <TouchableOpacity style={styles.signUp} onPress={() => navigation.navigate("SignupScreen")}>
         <Text style={styles.facebookText}>SignUp with Email</Text>
       </TouchableOpacity>
 
@@ -33,7 +33,7 @@ const OtherLoginsScreen = () => {
         <Text style={{ flex: 2 }}>Have any account?</Text>
         <TouchableOpacity
           style={{ flex: 1 }}
-          onPress={() => Alert.alert("It's Login time")}
+          onPress={() => navigation.navigate("LoginScreen")}
         >
           <Text style={styles.LoginText}>Login</Text>
         </TouchableOpacity>

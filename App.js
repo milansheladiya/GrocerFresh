@@ -37,10 +37,10 @@ const navigator = createStackNavigator(
     Personal : Personal,
   },
   {
-    initialRouteName: "FilterScreen",
+    initialRouteName: "OtherLoginScreen",
     defaultNavigationOptions: {
-      title: "Home",
-      header: false
+      title: "Grocer Fresh",
+      //header: false
     },
   }
 );
