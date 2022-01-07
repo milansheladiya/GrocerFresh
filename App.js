@@ -8,6 +8,7 @@ import OtherLoginScreen from './src/screens/OtherLoginsScreen';
 import WeeklyDealScreen from "./src/screens/WeeklyDealScreen";
 import FavouriteScreen from "./src/screens/FavouriteScreen";
 import SortingScreen from "./src/screens/SortingScreen";
+import FilterScreen from "./src/screens/FilterScreen";
 
 const navigator = createStackNavigator(
   {
@@ -19,9 +20,10 @@ const navigator = createStackNavigator(
     SignupScreen:SignupScreen,
     FavouriteScreen:FavouriteScreen,
     SortingScreen:SortingScreen,
+    FilterScreen:FilterScreen,
   },
   {
-    initialRouteName: "SortingScreen",
+    initialRouteName: "FilterScreen",
     defaultNavigationOptions: {
       title: "App",
     },
