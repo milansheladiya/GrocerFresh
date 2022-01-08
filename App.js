@@ -15,6 +15,8 @@ import Meat from "./src/screens/Meat";
 import Vegetables from "./src/screens/Vegetables";
 import Bakery from "./src/screens/Bakery";
 import Personal from "./src/screens/Personal";
+import CheckoutScreen from "./src/screens/CheckoutScreen";
+import DeliveryTimeScreen from "./src/screens/DeliveryTimeScreen";
 
 
 
@@ -35,6 +37,8 @@ const navigator = createStackNavigator(
     Frozen : Frozen,
     Bakery : Bakery,
     Personal : Personal,
+    CheckoutScreen:CheckoutScreen,
+    DeliveryTimeScreen:DeliveryTimeScreen,
   },
   {
     initialRouteName: "OtherLoginScreen",

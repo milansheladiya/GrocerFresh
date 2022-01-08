@@ -39,7 +39,7 @@ const CartScreen = () => {
 
 
       
-          <TouchableOpacity onPress={() => Alert.alert("Simple Button pressed")} style={{backgroundColor:'#548CFF',position:'absolute', bottom:10, width:'100%', height:60, justifyContent:'center', alignItems:'center'}}>
+          <TouchableOpacity onPress={() => navigation.navigate("CheckoutScreen")} style={{backgroundColor:'#548CFF',position:'absolute', bottom:10, width:'100%', height:60, justifyContent:'center', alignItems:'center'}}>
               <Text style={{color:'black',fontSize:20}}>
                 Checkout : 100$
               </Text>
