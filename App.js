@@ -41,7 +41,7 @@ const navigator = createStackNavigator(
     DeliveryTimeScreen:DeliveryTimeScreen,
   },
   {
-    initialRouteName: "OtherLoginScreen",
+    initialRouteName: "LoginScreen",
     defaultNavigationOptions: {
       title: "Grocer Fresh",
       //header: false

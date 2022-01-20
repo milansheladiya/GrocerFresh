@@ -14,7 +14,7 @@ import CartProducts from "../components/CartProducts";
 import { Fontisto } from "@expo/vector-icons";
 import {Fruits} from '../Data/data';
 
-const CartScreen = () => {
+const CartScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Fontisto
