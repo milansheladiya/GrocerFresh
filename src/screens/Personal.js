@@ -1,347 +1,362 @@
-import React, { useState } from "react";
-import {Dimensions, Image, Text, View, StyleSheet,Button} from 'react-native';
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  Alert,
+} from "react-native";
+import {
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
+import { personalData } from "./data";
 
+const { width, height } = Dimensions.get("screen");
 
-const {width,height} = Dimensions.get('screen');
+const Personal = ({ navigation }) => {
+  const [currentState, setCurrentState] = useState("Home");
+  const [searchValue, setSearchValue] = useState("");
+  const [n1, n2] = React.useState(1);
+  const [num, setNum] = React.useState({});
+  const [pageData, setPageData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [filtered, setFiltered] = useState(false);
 
-const Moisturizer = ['https://media.glamour.com/photos/5e445e17f4fce00008ba04e8/3:2/w_2498,h_1665,c_limit/river.jpg']
-const FaceWash = ['https://i0.wp.com/post.greatist.com/wp-content/uploads/sites/2/2020/09/189620-13-Best-Face-Wash-Products-for-Men-1296x728-Header-2e69ed.jpg?w=1155&h=1528']
-const FaceWashGs = ['https://www.scarymommy.com/wp-content/uploads/2021/04/12/face-washes-for-teens.jpg']
-const ShampooC = ['https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-sulphate-free-shampoo-conditioner-1584706761.jpg']
-const BodyWash = ["https://ustraa.cdn.imgeng.in/media/ustraa/1/_/1_3_.jpg"]
+  const pageType = navigation.state?.params?.type || "Personal";
+  // if(pageType == 'cart'){
+  //   pageData = []
+  // }
 
-const Bakery = ({navigation}) => {
-    const [currentState, setCurrentState] = useState('Home')
+  useEffect(() => {
+    const data = personalData[pageType] || [];
+    setPageData(data);
+  }, [pageType]);
 
-    const [n1, n2] = React.useState(0);
-    const [num, setNum] = React.useState(0);
-  
-   const increment = () => {
-     if( num < 10){
-     setNum(num + 1);
-     n2(n1+15);
-    }else{
-      
+  const increment = (key) => {
+    if ((num[key] || 0) < 10) {
+      setNum({ ...num, [key]: (num[key] || 0) + 1 });
+      n2(n1 + 15);
+    } else {
       alert("Maxium Quantity limit");
     }
-     
-   }
-   const decrement = () => {
-     if(num > 0){
-      setNum(num - 1);
-      n2(n1-15);
-
-     }
-    else{
+  };
+  const decrement = (key) => {
+    if (num[key] > 0) {
+      setNum({ ...num, [key]: num[key] - 1 });
+      n2(n1 - 15);
+    } else {
       setNum(0);
     }
-    
   };
-    return(
-        <View style= {{flex: 1 , width: width, height: height, paddingTop: 40, backgroundColor: 'black'}} >
-              <View style={{marginTop: 0, width: 450, height: 50 , backgroundColor: 'black' , flexDirection: 'row' , justifyContent: 'flex-start' }}>
-              <TouchableOpacity   onPress={() =>  (navigation.navigate('HomeScreen'))} >
-                <Icon name= 'arrow-back' size={30} color={'white'} style={{ margin: 10}}/>
-              </TouchableOpacity>
-              <Text style={{
-                  marginHorizontal: 25,
-                  padding : 5,
-                  margin: 6,
-                  fontSize: 23,
-                  color: 'white' ,
-                  textAlign: 'center',
-                  fontFamily: 'Arial',
-                  backgroundColor: '#5359D1',
-                  
-                   }}>PERSONAL</Text>
 
-                <TouchableOpacity   onPress={() =>  (alert('seacrh'))} >
-                <Icon name= 'ios-search' size={30} color={'white'} style={{ margin:5, marginLeft: 50, position: 'relative'}}/>
+  const handleSearch = () => {
+    let newData = [];
+    if (searchValue) {
+      newData = pageData.filter(
+        (e) =>
+          e.name && e.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      console.log(searchValue, newData);
+      setFiltered(true);
+    } else {
+      setFiltered(false);
+    }
+    setFilteredData(newData);
+  };
 
-              </TouchableOpacity>
+  const finalData = filtered ? filteredData : pageData;
+  return (
+    <View
+      style={{
+        flex: 1,
+        width: width,
+        height: height,
+      }}
+    >
+      <View
+        style={{
+          marginTop: 0,
+          width: Dimensions.get("window").width,
+          backgroundColor: "lightblue",
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          zIndex: -1,
+          position: "relative",
+          paddingTop: 40,
+        }}
+      >
+        <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+          <Icon
+            name="arrow-back"
+            size={30}
+            color={"black"}
+            style={{ margin: 10 }}
+          />
+        </TouchableOpacity>
+        <Text
+          style={{
+            width: Dimensions.get("window").width - 90,
+            marginHorizontal: "auto",
+            marginVertical: 5,
+            paddingVertical: 6,
+            fontSize: 23,
+            color: "white",
+            textAlign: "center",
+            fontFamily: "Arial",
+            color: "black",
+            fontWeight: "bold",
+            height: 30,
+            zIndex: 0,
+            textTransform: "uppercase",
+          }}
+        >
+          {pageType}
+        </Text>
+      </View>
 
-                <TouchableOpacity   onPress={() =>  (alert('cart'))} >
-                <Icon name= 'ios-cart' size={30} color={'white'} style={{margin: 5, marginLeft: 10}}/>
-              </TouchableOpacity>
+      {/* Search View */}
+      <View
+        style={{
+          backgroundColor: "white",
+          zIndex: 2,
+          width: width,
+          height: 40,
+          flexDirection: "row",
+          justifyContent: "space-around",
+        }}
+      >
+        <TextInput
+          placeholder=" Search"
+          value={searchValue}
+          onChangeText={(e) => setSearchValue(e)}
+          style={{
+            color: "black",
+            width: 300,
+            height: 30,
+            borderRadius: 10,
+            borderWidth: 1,
+            marginTop: 10,
+            padding: 5,
+          }}
+        />
 
+        <TouchableOpacity onPress={() => handleSearch()}>
+          <Icon
+            name="ios-search"
+            size={30}
+            color={"black"}
+            style={{
+              marginTop: 10,
+              marginRight: 10,
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+
+      <View
+        style={{
+          padding: 10,
+          backgroundColor: "white",
+          width: width,
+          height: 50,
+          flexDirection: "row",
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            alert("sorting");
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              margin: 5,
+              fontWeight: "500",
+              textAlign: "center",
+              position: "fixed",
+              color: "black",
+            }}
+          >
+            Sort ↓
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("FilterScreen", { type: pageType })
+          }
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              position: "fixed",
+              margin: 5,
+              marginLeft: "70%",
+              fontWeight: "500",
+              textAlign: "center",
+              color: "black",
+            }}
+          >
+            Filters
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView
+        style={{
+          width: width,
+          height: height,
+          backgroundColor: "white",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            margin: 10,
+            flexWrap: "wrap",
+          }}
+        >
+          {finalData.length ? (
+            finalData.map((data) => (
+              <View
+                style={{
+                  borderColor: "black",
+                  borderWidth: 1,
+                  margin: 2,
+                  borderRadius: 10,
+                  marginBottom: 10,
+                  width: 180,
+                  height: 230,
+                }}
+              >
+                <TouchableOpacity onPress={() => alert("Moisturizer")}>
+                  <Image source={{ uri: data.url }} style={styles.imagestyle} />
+                </TouchableOpacity>
+
+                <View
+                  style={{
+                    width: 120,
+                    height: 100,
+                    marginBottom: 2,
+                    flexDirection: "row",
+                    backgroundColor: "transparent",
+                    justifyContent: "center",
+                    display: "flex",
+                    margin: 10,
+                    alignSelf: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      alignSelf: "center",
+                      width: 150,
+                      height: 50,
+                      marginBottom: 60,
+                    }}
+                  >
+                    <Text style={styles.textstyle}>{data.name}</Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        borderRadius: 10,
+                        justifyContent: "center",
+                        marginTop: 10,
+                        height: 40
+                      }}
+                    >
+                      <Icon
+                        name="ios-remove-circle"
+                        size={30}
+                        onPress={() => decrement(`${data.id}`)}
+                        color={"#1C6DD0"}
+                      />
+                      <Text
+                        style={{
+                          paddingHorizontal: 15,
+                          fontSize: 20,
+                          color: "black",
+                        }}
+                      >
+                        {num[`${data.id}`] || [0]}
+                      </Text>
+                      <Icon
+                        name="ios-add-circle"
+                        size={30}
+                        onPress={() => increment(`${data.id}`)}
+                        color={"#1C6DD0"}
+                      />
+                    </View>
+                  </View>
+                </View>
               </View>
-                <View style={{
-                    padding: 10,
-                    backgroundColor: 'white',
-                    width: width,
-                    height : 50,
-                    flexDirection: 'row'
-                }}>
-                    <TouchableOpacity onPress={() => {alert('sorting')}}>
-                        <Text style={{
-                            fontSize: 20,
-                            margin: 5,
-                            fontWeight: '500',
-                            textAlign: 'center',
-                            position: 'fixed',
-                            color : 'black'
-                        }}>Sort ↓ </Text>
-                    </TouchableOpacity>
+            ))
+          ) : (
+            <Text>No results found!</Text>
+          )}
+        </View>
+      </ScrollView>
 
-                    <TouchableOpacity onPress={() => {alert('Filtering')}}>
-                        <Text style={{
-                            fontSize: 20,
-                            position: 'fixed',
-                            margin: 5,
-                            marginLeft: "70%",
-                            fontWeight: '500',
-                            textAlign: 'center',
-                            color : 'black',
+      <View
+        style={{
+          paddingBottom: 25,
+          backgroundColor: "lightblue",
+        }}
+      >
+        <Button
+          style={{
+            width: 100,
+            height: 100,
+            marginHorizontal: 10,
+            marginVertical: 10,
+            paddingBottom: 10,
+          }}
+          title="Add To Cart"
+          color={"black"}
+          onPress={() => {
+            Alert.alert("Cart Message", "Item added to cart");
+          }}
+        />
+      </View>
 
-                        }}>Filters</Text>
-                    </TouchableOpacity>
-
-                </View>
-                
-
-
-                <ScrollView style={{
-                  width: width,
-                  height: height,
-                  backgroundColor: 'white',
-                  
-                  
-              }}> 
-              <View style={{
-                  borderColor: 'black',
-                  borderWidth: 2,
-                  margin: 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                  marginBottom: 10,
-                
-              }}>
-              <TouchableOpacity onPress={() => alert('Moisturizer')}>
-                <Image source={Moisturizer} style={styles.imagestyle} />
-                </TouchableOpacity>
-               
-
-
-                <View style = {{ width: 350,
-                    height : 50,
-                    marginBottom: 10,
-                    flexDirection : 'row',
-                    backgroundColor: 'transparent',
-                    justifyContent: 'center',
-                    margin: 10,
-                    }}>
-                        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center',  width: 350, height: 35 }}>
-                        <Text style={styles.textstyle} >Moisturizer</Text>
-                        <View style ={{flexDirection: 'row', alignItems: 'center',  borderRadius: 10,  }}>
-                        <Icon name = 'ios-remove-circle' size={35} onPress={decrement} color={'darkorange'} />
-                        <Text style = {{paddingHorizontal: 20, fontSize: 25, color: 'black'}}>{num}</Text>
-                        <Icon name = 'ios-add-circle' size={35} onPress={increment} color={'darkorange'}/>
-                        </View></View>
-                    </View></View>
-
-                
-                    <View style={{
-                  borderColor: 'black',
-                  borderWidth: 2,
-                  margin: 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                  marginBottom: 10,
-                
-              }}>
-                <TouchableOpacity onPress={() => alert('Mens FaceWash')}>
-                <Image source={FaceWash} style={styles.imagestyle}/>
-                </TouchableOpacity>
-  
-
-                <View style = {{ width: 300,
-                    height : 40,
-                    marginBottom: 10,
-                    flexDirection : 'row',
-                    backgroundColor: 'transparent',
-                    justifyContent: 'center',
-                    margin: 10,
-
-                    }}>
-                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center',  width: 350, height: 35 }}>
-                        <Text style={styles.textstyle} >FaceWash M</Text>
-                        <View style ={{flexDirection: 'row', alignItems: 'center', borderRadius: 10,  }}>
-                        <Icon name = 'ios-remove-circle' size={35} onPress={decrement} color={'darkorange'} />
-                        <Text style = {{paddingHorizontal: 20, fontSize: 25, color: 'black'}}>{num}</Text>
-                        <Icon name = 'ios-add-circle' size={35} onPress={increment} color={'darkorange'}/>
-                        </View></View>
-                    </View></View>
-
-                
-
-                    <View style={{
-                  borderColor: 'black',
-                  borderWidth: 2,
-                  margin: 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                  marginBottom: 10,
-                
-              }}>
-                <TouchableOpacity onPress={() => alert('Women FaceWash')}>
-                <Image source={FaceWashGs} style={styles.imagestyle}/>
-                </TouchableOpacity>
-                
-
-                <View style = {{ width: 300,
-                    height : 40,
-                    marginBottom: 10,
-                    flexDirection : 'row',
-                    backgroundColor: 'transparent',
-                    justifyContent: 'center',
-                    margin: 10,
-
-                    }}>
-                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center',  width: 350, height: 35 }}>
-                        <Text style={styles.textstyle} >FaceWash G</Text>
-                        <View style ={{flexDirection: 'row', alignItems: 'center', borderRadius: 10,  }}>
-                        <Icon name = 'ios-remove-circle' size={35} onPress={decrement} color={'darkorange'} />
-                        <Text style = {{paddingHorizontal: 20, fontSize: 25, color: 'black'}}>{num}</Text>
-                        <Icon name = 'ios-add-circle' size={35} onPress={increment} color={'darkorange'}/>
-                        </View></View>
-                    </View></View>
-
-                
-                    <View style={{
-                  borderColor: 'black',
-                  borderWidth: 2,
-                  margin: 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                  marginBottom: 10,
-                
-              }}>
-                <TouchableOpacity onPress={() => alert('Shampoo & Conditioner')}>
-                <Image source={ShampooC} style={styles.imagestyle}/>
-                </TouchableOpacity>
-                <View style = {{ width: 300,
-                    height : 40,
-                    marginBottom: 10,
-                    flexDirection : 'row',
-                    backgroundColor: 'transparent',
-                    justifyContent: 'center',
-                    margin: 10
-                    }}>
-                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center',  width: 350, height: 35 }}>
-                        <Text style={styles.textstyle} >Shampoo+Conditioner </Text>
-                        <View style ={{flexDirection: 'row', alignItems: 'center', borderRadius: 10,  }}>
-                        <Icon name = 'ios-remove-circle' size={35} onPress={decrement} color={'darkorange'} />
-                        <Text style = {{paddingHorizontal: 20, fontSize: 25, color: 'black'}}>{num}</Text>
-                        <Icon name = 'ios-add-circle' size={35} onPress={increment} color={'darkorange'}/>
-                        </View></View>
-                    </View></View>
-
-                
-
-                    <View style={{
-                  borderColor: 'black',
-                  borderWidth: 2,
-                  margin: 2,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 10,
-                  marginBottom: 10,
-                
-              }}>
-                <TouchableOpacity onPress={() => alert('Body Wash')}>
-                <Image source={BodyWash} style={styles.imagestyle}/>
-                </TouchableOpacity>
-
-                <View style = {{ width: 300,
-                    height : 40,
-                    marginBottom: 10,
-                    flexDirection : 'row',
-                    backgroundColor: 'transparent',
-                    justifyContent: 'center',
-                    margin: 10,
-                    }}>
-                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center',  width: 350, height: 35 }}>
-                        <Text style={styles.textstyle} >BodyWash</Text>
-                        <View style ={{flexDirection: 'row', alignItems: 'center', borderRadius: 10,  }}>
-                        <Icon name = 'ios-remove-circle' size={35} onPress={decrement} color={'darkorange'} />
-                        <Text style = {{paddingHorizontal: 20, fontSize: 25, color: 'black'}}>{num}</Text>
-                        <Icon name = 'ios-add-circle' size={35} onPress={increment} color={'darkorange'}/>
-                        </View></View>
-                    </View></View>
-
-                
-
-
-
-
-              </ScrollView>
-
-                <View style ={{
-                    paddingBottom: 25,
-                }}>
-                    <Button style={{
-                        width: 100,
-                        height: 100,
-                        backgroundColor: 'red',
-                        marginHorizontal: 10,
-                        marginVertical: 10,
-                        paddingBottom: 10,
-                    }} 
-                    title ='Add To Cart'
-                    onPress={ () => {alert('pressed')}}/>
-                    
-                </View>
-
-
-              <View>
-
-                </View>
-          
-            
-            </View> 
-
-    );
-}
-
+      <View></View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
- 
-    imagestyle : {
-        width: 350,
-        height: 200,
-        borderRadius: 10,
-        alignSelf: 'center',
-        marginTop: 10,
-       
-        
-        shadowOffset: { width: 10, height: 10 },
-            shadowColor: '#000',
-            shadowOpacity: 1,
-            backgroundColor : "#000",
-            
-       
-    },
+  imagestyle: {
+    width: 150,
+    height: 100,
+    borderRadius: 10,
+    marginTop: 10,
+    shadowOffset: { width: 10, height: 10 },
+    shadowColor: "#000",
+    shadowOpacity: 1,
+    backgroundColor: "#000",
+    alignSelf: "center",
+  },
 
-    textstyle :{
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#0C090A',
-        
-        
-    },
-    ratestyle : {
-        fontSize: 15,
-        textAlign: 'center',
-        marginVertical: 5,
-
-    }
+  textstyle: {
+    fontSize: 15,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#0C090A",
+    marginBottom: 5,
+  },
+  ratestyle: {
+    fontSize: 15,
+    textAlign: "center",
+    marginVertical: 5,
+  },
 });
 
-export default Bakery;
+export default Personal;

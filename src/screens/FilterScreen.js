@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Slider, Divider, CheckBox, Icon } from "react-native-elements";
 
-const FilterScreen = () => {
+const FilterScreen = ({ navigation }) => {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(10);
 
@@ -19,11 +19,23 @@ const FilterScreen = () => {
   const [CatCheck4, setCatCheck4] = useState(false);
   const [CatCheck5, setCatCheck5] = useState(false);
   const [CatCheck6, setCatCheck6] = useState(false);
+  const pageType = navigation.state?.params?.type || "Personal";
 
   return (
     <View style={(styles.container, styles.contentView)}>
-      <Text style={styles.title}> Filter </Text>
-
+      <View style={{ flexDirection: "row", margin: 2, marginHorizontal: 10 }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Personal", { type: pageType })}
+        >
+          <Icon
+            name="arrow-back"
+            size={30}
+            color={"black"}
+            style={{ marginTop: 15 }}
+          />
+        </TouchableOpacity>
+        <Text style={styles.title}> Filter </Text>
+      </View>
       <Text style={{ fontWeight: "bold", marginVertical: 10 }}>
         {" "}
         Min Value : {minValue} $
@@ -143,7 +155,7 @@ const FilterScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
+    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     height: "100%",
@@ -160,12 +172,13 @@ const styles = StyleSheet.create({
     color: "#1C6DD0",
     marginVertical: 10,
     alignSelf: "center",
+    marginLeft: 20,
   },
   button: {
     alignItems: "center",
     backgroundColor: "#D3DEDC",
     padding: 10,
-    marginTop:10,
+    marginTop: 10,
   },
 });
 
