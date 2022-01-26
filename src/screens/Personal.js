@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
-import { personalData } from "./data";
+import { personalData } from "../Data/data";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -169,7 +169,7 @@ const Personal = ({ navigation }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            alert("sorting");
+            navigation.navigate("SortingScreen", { type: pageType });
           }}
         >
           <Text
@@ -235,7 +235,9 @@ const Personal = ({ navigation }) => {
                   height: 230,
                 }}
               >
-                <TouchableOpacity onPress={() => alert("Moisturizer")}>
+                <TouchableOpacity
+                  onPress={() => Alert.alert("Message", data.description)}
+                >
                   <Image source={{ uri: data.url }} style={styles.imagestyle} />
                 </TouchableOpacity>
 
@@ -263,6 +265,7 @@ const Personal = ({ navigation }) => {
                     }}
                   >
                     <Text style={styles.textstyle}>{data.name}</Text>
+                    <Text style={styles.ratestyle}>$ {data.price}</Text>
                     <View
                       style={{
                         flexDirection: "row",
@@ -270,7 +273,7 @@ const Personal = ({ navigation }) => {
                         borderRadius: 10,
                         justifyContent: "center",
                         marginTop: 10,
-                        height: 40
+                        height: 40,
                       }}
                     >
                       <Icon

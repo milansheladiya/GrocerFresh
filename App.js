@@ -12,6 +12,7 @@ import FilterScreen from "./src/screens/FilterScreen";
 import Personal from "./src/screens/Personal";
 import CheckoutScreen from "./src/screens/CheckoutScreen";
 import DeliveryTimeScreen from "./src/screens/DeliveryTimeScreen";
+import AccountScreen from "./src/screens/AccountScreen";
 
 const navigator = createStackNavigator(
   {
@@ -27,9 +28,10 @@ const navigator = createStackNavigator(
     Personal: Personal,
     CheckoutScreen: CheckoutScreen,
     DeliveryTimeScreen: DeliveryTimeScreen,
+    AccountScreen: AccountScreen,
   },
   {
-    initialRouteName: "HomeScreen",
+    initialRouteName: "LoginScreen",
     defaultNavigationOptions: {
       title: "Grocer Fresh",
       header: false,

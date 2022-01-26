@@ -8,6 +8,7 @@ import {
   Dimensions,
   ImageBackground,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import VegesP from "../../assets/VegesH.png";
 import fruits from "../../assets/fruitsD.png";
@@ -17,18 +18,20 @@ import bakery from "../../assets/bakeryD.png";
 import personal from "../../assets/personalD.png";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BottomTabNavigator from "../components/BottomTabNavigator";
 
 const { width, height } = Dimensions.get("screen");
 
 const saleproduct = [
   "https://i.ytimg.com/vi/aRS2WPiExQQ/maxresdefault.jpg",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIgLnpY8MEk9Ou6Yu8NojeQEF-mribQNaZ5RBrqeSfQkVFOxkGuWv9CEY5QyMkR4pgaJY&usqp=CAU",
+  "https://www.accuform.com/files/damObject/Image/huge/MGNF909.jpg",
+  "https://www.fda.gov/files/covid_foodretail_bestpractices_header.png",
 ];
 const deals = [
+  "https://www.reebee.com/blog/wp-content/uploads/2020/09/Deals-of-the-Yellow-Week-7.png",
+  "https://cdn.static-zoutons.com/images/originals/coupon-category/Grocery_Deals_1588267949.jpg",
+  "https://www.baapoffers.com/uploads/grofers-get-30-cashback-on-grocery.jpg",
   "https://cdn.grabon.in/gograbon/images/web-images/uploads/1618548899692/groceries-offers.jpg",
-  "https://www.scarymommy.com/wp-content/uploads/2021/04/12/face-washes-for-teens.jpg",
-  "https://cdn.grabon.in/gograbon/images/web-images/uploads/1618548899692/groceries-offers.jpg",
-  "https://www.scarymommy.com/wp-content/uploads/2021/04/12/face-washes-for-teens.jpg",
 ];
 
 const HomeS = ({ navigation }) => {
@@ -97,8 +100,9 @@ const HomeS = ({ navigation }) => {
       </View>
 
       <ScrollView
+        showsVerticalScrollIndicator={false}
         style={{
-          width: width,
+          width: Dimensions.get("window").width,
           height: height,
           backgroundColor: "white",
         }}
@@ -112,6 +116,7 @@ const HomeS = ({ navigation }) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
+            paddingHorizontal: "auto",
           }}
         >
           <ScrollView style={{ marginLeft: 5 }}>
@@ -283,21 +288,37 @@ const HomeS = ({ navigation }) => {
         </View>
 
         {/* saleImage */}
-        <SafeAreaView style={{ flex: 1 ,}}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Text
+            style={{
+              fontSize: 25,
+              fontWeight: "300",
+              textAlign: "center",
+              margin: 5,
+              color: "red",
+            }}
+          >
+            Store Safety
+          </Text>
           <View style={{ width: width, height: height * 0.25 }}>
             <ScrollView
               onScroll={({ nativeEvent }) => onchange(nativeEvent)}
               showsHorizontalScrollIndicator={false}
               pagingEnabled
               horizontal
-              style={{ width: width, height: height * 0.25, borderRadius: 10 }}
+              style={{
+                width: width,
+                height: height * 0.25,
+                borderRadius: 10,
+                borderWidth: 1,
+              }}
             >
               {saleproduct.map((e, index) => (
                 <Image
                   style={{
                     width: width,
                     height: height * 0.25,
-                    alignSelf:'center',
+                    alignSelf: "center",
                   }}
                   key={e}
                   resizeMode="strech"
@@ -334,22 +355,21 @@ const HomeS = ({ navigation }) => {
         >
           <Text
             style={{
-              width: 100,
-              height: 50,
-              marginTop: 10,
+              width: Dimensions.get("screen").width,
+              height: 30,
+              marginTop: 5,
               textAlign: "center",
-              fontSize: 20,
-              fontWeight: "bold",
-              color: "white",
-              backgroundColor: "#5359D1",
+              fontSize: 25,
+              fontWeight: "300",
+              color: "red",
+              alignSelf: "center",
             }}
           >
-            Deal for the day!!
+            Grocery Deals
           </Text>
 
           <View
             style={{
-              backgroundColor: "white",
               flexDirection: "row",
               marginHorizontal: 10,
               justifyContent: "space-between",
@@ -408,9 +428,9 @@ const styles = StyleSheet.create({
     height: 100,
     margin: 10,
     borderColor: "black",
-    backgroundColor:'lightgray',
-    borderRadius:10,
-    borderWidth:1,
+    backgroundColor: "lightgray",
+    borderRadius: 10,
+    borderWidth: 1,
   },
   dotActive: {
     margin: 3,

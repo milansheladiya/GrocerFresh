@@ -6,10 +6,10 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,7 +19,17 @@ const LoginScreen = ({navigation}) => {
         source={require("../../assets/GrocerFreshLogo.jpeg")}
         style={styles.img}
       />
-
+      <Text
+        style={{
+          fontSize: 20,
+          color: "red",
+          fontWeight: "250",
+          margin: 10,
+          marginBottom: 50,
+        }}
+      >
+        Welcome to Grocer Fresh
+      </Text>
       <View style={styles.inputView}>
         <TextInput
           placeholder="Email"
@@ -42,13 +52,19 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.forgotButton}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={() => navigation.navigate("HomeScreen")}>
+      <TouchableOpacity
+        style={styles.loginBtn}
+        onPress={() => navigation.replace("HomeScreen")}
+      >
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
 
       <View style={styles.signUpArea}>
-        <Text style={{flex:2}}>Don't have any account?</Text>
-        <TouchableOpacity style={{flex:1}} onPress={() => navigation.navigate("SignupScreen")}>
+        <Text style={{ flex: 2 }}>Don't have any account?</Text>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={() => navigation.replace("SignupScreen")}
+        >
           <Text style={styles.signUpText}>SignUp</Text>
         </TouchableOpacity>
       </View>
@@ -71,7 +87,7 @@ const styles = StyleSheet.create({
 
   inputView: {
     backgroundColor: "#D6E5FA",
-    borderRadius: 20,
+    borderRadius: 10,
     width: "70%",
     height: 45,
     marginBottom: 10,
@@ -98,16 +114,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    backgroundColor: "#113CFC",
+    backgroundColor: "lightblue",
+    borderWidth: 1,
   },
   loginText: {
-    color: "#F5F5F5",
-    fontWeight: "bold",
+    color: "black",
+    fontWeight: "400",
   },
   signUpArea: {
     marginTop: 20,
-    flexDirection:'row',
-    marginHorizontal:60
+    flexDirection: "row",
+    marginHorizontal: 60,
   },
 
   signUpText: {
