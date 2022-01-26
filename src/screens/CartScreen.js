@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import CartProducts from "../components/CartProducts";
 import { Fontisto } from "@expo/vector-icons";
+import {Fruits} from '../Data/data';
 import {insertWithSetDocHandler} from "../Firebase/insert";
 import {getUserIdHandler} from "../Firebase/auth";
 import {readAllWithId} from "../Firebase/read";

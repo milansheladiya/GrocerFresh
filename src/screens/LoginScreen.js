@@ -21,7 +21,9 @@ const LoginScreen = ({navigation}) => {
       if(isAdminVar)
       {
           // if user admin
-          console.log("Admin");
+          console.log("AdminHomeScreen");
+        navigation.navigate("AdminHomeScreen");
+
       }    
       else
       {
@@ -43,7 +45,7 @@ const LoginScreen = ({navigation}) => {
         if(isAdminVar)
         {
           console.log("Admin");
-            // if user admin
+          navigation.navigate("HomeScreen");
         }
         else
         {

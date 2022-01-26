@@ -12,21 +12,34 @@ import FilterScreen from "./src/screens/FilterScreen";
 import Personal from "./src/screens/Personal";
 import CheckoutScreen from "./src/screens/CheckoutScreen";
 import DeliveryTimeScreen from "./src/screens/DeliveryTimeScreen";
+import AdminHomeScreen from "./src/screens/Admin/AdminHomeScreen";
+import NewProductScreen from "./src/screens/Admin/NewProductScreen";
+import CategoryScreen from "./src/screens/Admin/CategoryScreen";
+import AdminProductScreen from "./src/screens/Admin/AdminProductScreen";
 
 const navigator = createStackNavigator(
   {
     HomeScreen: HomeScreen,
     LoginScreen: LoginScreen,
     OtherLoginScreen: OtherLoginScreen,
-    WeeklyDealScreen: WeeklyDealScreen,
-    CartScreen: CartScreen,
-    SignupScreen: SignupScreen,
-    FavouriteScreen: FavouriteScreen,
-    SortingScreen: SortingScreen,
-    FilterScreen: FilterScreen,
-    Personal: Personal,
-    CheckoutScreen: CheckoutScreen,
-    DeliveryTimeScreen: DeliveryTimeScreen,
+    WeeklyDealScreen:WeeklyDealScreen,
+    CartScreen:CartScreen,
+    SignupScreen:SignupScreen,
+    FavouriteScreen:FavouriteScreen,
+    SortingScreen:SortingScreen,
+    FilterScreen:FilterScreen,
+    Vegetables : Vegetables,
+    Fruits : Fruits,
+    Meat: Meat,
+    Frozen : Frozen,
+    Bakery : Bakery,
+    Personal : Personal,
+    CheckoutScreen:CheckoutScreen,
+    DeliveryTimeScreen:DeliveryTimeScreen,
+    AdminHomeScreen:AdminHomeScreen,
+    NewProductScreen:NewProductScreen,
+    CategoryScreen:CategoryScreen,
+    AdminProductScreen:AdminProductScreen,
   },
   {
     initialRouteName: "HomeScreen",
