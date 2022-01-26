@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
@@ -8,10 +8,55 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
+import {signInHandler,isSignedInHandler,isAdminVar} from '../Firebase/auth';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+
+  useEffect(async () => {
+    if(await isSignedInHandler())
+    {
+      if(isAdminVar)
+      {
+          // if user admin
+          console.log("AdminHomeScreen");
+        navigation.navigate("AdminHomeScreen");
+
+      }    
+      else
+      {
+        navigation.navigate("HomeScreen");
+      }
+    }
+    else
+    {
+      console.log("User were not logged in!");
+    }
+  },[]);
+
+
+  const sinInOperator = async () => {
+      const res = await signInHandler(email,password);
+      console.log(res,"------ Login -----");
+      if(res)
+      {
+        if(isAdminVar)
+        {
+          console.log("Admin");
+          navigation.navigate("HomeScreen");
+        }
+        else
+        {
+          navigation.navigate("HomeScreen");
+        }
+      }
+      else
+      {
+        console.log("Wrong credentials ");
+      }
+  }
 
   return (
     <View style={styles.container}>
@@ -24,7 +69,8 @@ const LoginScreen = ({navigation}) => {
         <TextInput
           placeholder="Email"
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          value={email}
+          onChangeText={setEmail}
           style={styles.textInput}
         />
       </View>
@@ -33,7 +79,8 @@ const LoginScreen = ({navigation}) => {
           placeholder="Password"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
-          onChangeText={(password) => setEmail(password)}
+          value={password}
+          onChangeText={setPassword}
           style={styles.textInput}
         />
       </View>
@@ -42,7 +89,7 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.forgotButton}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={() => navigation.navigate("HomeScreen")}>
+      <TouchableOpacity style={styles.loginBtn} onPress={sinInOperator}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
 
