@@ -122,7 +122,7 @@ const HomeS = ({ navigation }) => {
           <ScrollView style={{ marginLeft: 5 }}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("Personal", { type: "Vegetables" })
+                navigation.navigate("Personal", { type: "vegetables" })
               }
             >
               <Image style={styles.imagestyle} source={VegesP} />
@@ -148,7 +148,7 @@ const HomeS = ({ navigation }) => {
 
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("Personal", { type: "Frozen" })
+                navigation.navigate("Personal", { type: "frozenFood" })
               }
             >
               <Image style={styles.imagestyle} source={frozen} />
@@ -205,7 +205,7 @@ const HomeS = ({ navigation }) => {
 
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("Personal", { type: "Bakery" })
+                navigation.navigate("Personal", { type: "bakeryFood" })
               }
             >
               <Image style={styles.imagestyle} source={bakery} />
@@ -234,7 +234,7 @@ const HomeS = ({ navigation }) => {
           {/* View3 */}
           <ScrollView>
             <TouchableOpacity
-              onPress={() => navigation.navigate("Personal", { type: "Meat" })}
+              onPress={() => navigation.navigate("Personal", { type: "meat" })}
             >
               <Image style={styles.imagestyle} source={meat} />
             </TouchableOpacity>
@@ -260,7 +260,7 @@ const HomeS = ({ navigation }) => {
 
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("Personal", { type: "Personal" })
+                navigation.navigate("Personal", { type: "dairy" })
               }
             >
               <Image style={styles.imagestyle} source={personal} />
@@ -281,7 +281,7 @@ const HomeS = ({ navigation }) => {
                 }}
               >
                 {" "}
-                Personal{" "}
+                Dairy{" "}
               </Text>
             </View>
           </ScrollView>
@@ -321,7 +321,7 @@ const HomeS = ({ navigation }) => {
                     alignSelf: "center",
                   }}
                   key={e}
-                  resizeMode="strech"
+                  resizeMode="stretch"
                   source={{ uri: e }}
                 />
               ))}

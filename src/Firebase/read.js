@@ -4,7 +4,7 @@ import { collection,doc,getDocs,getDoc,get,Timestamp,query, where,collectionGrou
 const db = getFirestore();
 
 export const readAllHandler = async (arr) => {
-    ["grocery","fruits","fruids"]
+    ["grocery","fruits","fruits"]
 
     if(arr.length === 1){
         const querySnapshot = await getDocs(collection(db, arr[0]));

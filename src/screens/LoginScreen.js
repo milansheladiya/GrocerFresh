@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
         if(isAdminVar)
         {
           console.log("Admin");
-          navigation.navigate("HomeScreen");
+          navigation.navigate("AdminHomeScreen");
         }
         else
         {
@@ -55,6 +55,7 @@ const LoginScreen = ({ navigation }) => {
       else
       {
         console.log("Wrong credentials ");
+        Alert.alert("Message", "Wrong credentials!");
       }
   }
 
