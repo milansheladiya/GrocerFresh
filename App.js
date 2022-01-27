@@ -16,6 +16,7 @@ import AdminHomeScreen from "./src/screens/Admin/AdminHomeScreen";
 import NewProductScreen from "./src/screens/Admin/NewProductScreen";
 import CategoryScreen from "./src/screens/Admin/CategoryScreen";
 import AdminProductScreen from "./src/screens/Admin/AdminProductScreen";
+import AccountScreen from "./src/screens/AccountScreen";
 
 const navigator = createStackNavigator(
   {
@@ -28,21 +29,17 @@ const navigator = createStackNavigator(
     FavouriteScreen:FavouriteScreen,
     SortingScreen:SortingScreen,
     FilterScreen:FilterScreen,
-    Vegetables : Vegetables,
-    Fruits : Fruits,
-    Meat: Meat,
-    Frozen : Frozen,
-    Bakery : Bakery,
-    Personal : Personal,
     CheckoutScreen:CheckoutScreen,
     DeliveryTimeScreen:DeliveryTimeScreen,
     AdminHomeScreen:AdminHomeScreen,
     NewProductScreen:NewProductScreen,
     CategoryScreen:CategoryScreen,
     AdminProductScreen:AdminProductScreen,
+    Personal: Personal,
+    AccountScreen: AccountScreen,
   },
   {
-    initialRouteName: "HomeScreen",
+    initialRouteName: "LoginScreen",
     defaultNavigationOptions: {
       title: "Grocer Fresh",
       header: false,
