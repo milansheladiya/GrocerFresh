@@ -14,7 +14,8 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
-import { personalData } from "../Data/data";
+// import { personalData } from "../Data/data";
+import {readAllHandler} from "../Firebase/read";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -32,9 +33,20 @@ const Personal = ({ navigation }) => {
   //   pageData = []
   // }
 
+  const productReadHandler = async () => {
+      const res = await readAllHandler(["grocery",pageType,pageType]);
+      console.log(pageType);
+      res.forEach((doc) => {
+          //console.log(doc.id, " => ", doc.data());
+          setPageData(pageData => [...pageData,{...doc.data(),id:doc.id,category:pageType}]);
+        });
+  };
+
   useEffect(() => {
-    const data = personalData[pageType] || [];
-    setPageData(data);
+    //const data = personalData[pageType] || [];
+    //const data = 
+    //setPageData(pageData);
+    productReadHandler();
   }, [pageType]);
 
   const increment = (key) => {
@@ -70,6 +82,7 @@ const Personal = ({ navigation }) => {
   };
 
   const finalData = filtered ? filteredData : pageData;
+  //console.log(pageType);
   return (
     <View
       style={{
@@ -233,6 +246,7 @@ const Personal = ({ navigation }) => {
                   marginBottom: 10,
                   width: 180,
                   height: 230,
+                 
                 }}
               >
                 <TouchableOpacity
@@ -262,6 +276,7 @@ const Personal = ({ navigation }) => {
                       width: 150,
                       height: 50,
                       marginBottom: 60,
+                     
                     }}
                   >
                     <Text style={styles.textstyle}>{data.name}</Text>
@@ -272,8 +287,9 @@ const Personal = ({ navigation }) => {
                         alignItems: "center",
                         borderRadius: 10,
                         justifyContent: "center",
-                        marginTop: 10,
+                        marginTop: 2,
                         height: 40,
+                    
                       }}
                     >
                       <Icon
@@ -297,6 +313,7 @@ const Personal = ({ navigation }) => {
                         onPress={() => increment(`${data.id}`)}
                         color={"#1C6DD0"}
                       />
+                      <Icon name='heart' size={25}  color={"red"} style={{marginHorizontal: 2,}}/>
                     </View>
                   </View>
                 </View>

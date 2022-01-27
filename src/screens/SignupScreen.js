@@ -1,7 +1,8 @@
 import React,{useEffect, useState} from "react";
-import { View,Text, StyleSheet,Image,ScrollView,TextInput, Button } from "react-native";
+import { View,Text, StyleSheet,Image,ScrollView,TextInput, Button,Dimensions } from "react-native";
 import {insertWithSetDocHandler} from '../Firebase/insert';
 import {signUpHandler,getUserIdHandler} from '../Firebase/auth';
+
 
 
 const SignupScreen = ({navigation}) => {
@@ -48,7 +49,7 @@ const SignupScreen = ({navigation}) => {
 
     return(
 
-            <View style={{marginTop:50}}>
+            <View style={{marginTop:50,backgroundColor:'white',height:Dimensions.get('window').height}}>
                 <Image source={require('../../assets/GrocerFreshLogo.png')} style={styles.img}/>
                 <Text style={{fontSize:20,alignSelf:'center',color:'  ',marginTop:10}}> Sign Up </Text>
                 <View>
