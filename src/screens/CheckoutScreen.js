@@ -13,6 +13,10 @@ const CheckoutScreen = ({ navigation }) => {
   const [check2, setCheck2] = useState(false);
   const [value, setValue] = useState(null);
 
+  const [ totalCartPrice,setTotalCartPrice ] = useState(navigation.getParam("totalCartPrice"));
+
+  //console.log(navigation.getParam("totalCartPrice"));
+
   const [address, setAddress] = useState(
     "5143 Queen Avenue Montreal QC H3W2V3"
   );
@@ -38,8 +42,8 @@ const CheckoutScreen = ({ navigation }) => {
           <View
             style={{ flexDirection: "column", flex: 1, alignItems: "flex-end" }}
           >
-            <Text style={styles.styl}>$100.00 </Text>
-            <Text style={styles.styl}>$15.00 </Text>
+            <Text style={styles.styl}>${totalCartPrice} </Text>
+            <Text style={styles.styl}>${totalCartPrice * 0.15} </Text>
           </View>
         </View>
         <Card.Divider />
@@ -51,7 +55,7 @@ const CheckoutScreen = ({ navigation }) => {
               { flex: 1, textAlign: "right", fontWeight: "bold", fontSize: 20 })
             }
           >
-            $115.00
+            ${(parseFloat(totalCartPrice) + parseFloat(totalCartPrice*0.15)).toFixed(2)}
           </Text>
         </View>
       </Card>

@@ -6,6 +6,8 @@ const db = getFirestore();
 
 export const UpdateDocuments = async (arr,fieldName) => {
 
+    //fieldName = { name: "new name", }
+
     console.log(arr[0],fieldName);
     if(arr.length === 2){
         const docRef =  doc(db, arr[0],arr[1]);

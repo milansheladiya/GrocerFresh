@@ -8,24 +8,40 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import {signInHandler,isSignedInHandler,isAdminVar} from '../Firebase/auth';
+import {signInHandler,isSignedInHandler,auth,signOutHandler} from '../Firebase/auth';
+import {readAllWithId} from "../Firebase/read";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [isAdmin,setIsAdmin] = useState(null);
 
   useEffect(async () => {
+    checkSigninHandler();
+  },[isAdmin]);
+
+  const isItAdmin = async () => {
+    const res = await readAllWithId(["customers",auth.currentUser.uid]);
+     console.log(res.data().isAdmin, "-------- inside    Login --------");
+     setIsAdmin(res.data().isAdmin);
+  }
+
+  const checkSigninHandler = async () => {
     if(await isSignedInHandler())
     {
-      if(isAdminVar)
+      isItAdmin();
+      if(isAdmin === null)
+        {
+
+        }
+        else if(isAdmin)
       {
           // if user admin
-          console.log("AdminHomeScreen");
+          console.log("  Admin  ");
         navigation.navigate("AdminHomeScreen");
 
       }    
-      else
+      else if (!isAdmin)
       {
         navigation.navigate("HomeScreen");
       }
@@ -34,20 +50,27 @@ const LoginScreen = ({ navigation }) => {
     {
       console.log("User were not logged in!");
     }
-  },[]);
+  };
 
 
   const sinInOperator = async () => {
+    await signOutHandler();
       const res = await signInHandler(email,password);
-      console.log(res,"------ Login -----");
+      console.log("------is Loggedin ----- : ",res);
       if(res)
       {
-        if(isAdminVar)
+        console.log("Is Admin : ============ " , isAdmin);
+        isItAdmin();
+        if(isAdmin === null)
+        {
+
+        }
+        else if(isAdmin)
         {
           console.log("Admin");
           navigation.navigate("AdminHomeScreen");
         }
-        else
+        else if(!isAdmin)
         {
           navigation.navigate("HomeScreen");
         }
@@ -69,7 +92,7 @@ const LoginScreen = ({ navigation }) => {
         style={{
           fontSize: 20,
           color: "red",
-          fontWeight: "250",
+          fontWeight: "300",
           margin: 10,
           marginBottom: 50,
         }}
@@ -108,7 +131,7 @@ const LoginScreen = ({ navigation }) => {
         <Text style={{ flex: 2 }}>Don't have any account?</Text>
         <TouchableOpacity
           style={{ flex: 1 }}
-          onPress={() => navigation.replace("SignupScreen")}
+          onPress={() => navigation.navigate("SignupScreen")}
         >
           <Text style={styles.signUpText}>SignUp</Text>
         </TouchableOpacity>
