@@ -7,9 +7,9 @@ import {
 } from "firebase/auth";
 import {readAllWithId} from "../Firebase/read";
 
-const auth = getAuth();
+export const auth = getAuth();
 
-export let isAdminVar = false;
+export let isAdminVar = null;
 
 // ######################################################  Signup Function  ######################################################
 export const signUpHandler =  async (email,password) => {
@@ -39,7 +39,6 @@ export const signInHandler = async(email,password) => {
         const user = userCredential.user;
         console.log("Login With : " , user.email);
         //-----set user is admin or not 
-         isAdminOperator();
         res = true;
       })
       .catch((error) => {
@@ -48,6 +47,7 @@ export const signInHandler = async(email,password) => {
         console.log(errorCode);
         console.log(errorMessage);
       });
+      isAdminOperator();
       return res;
   };
 
@@ -93,11 +93,12 @@ export const signOutHandler = async () => {
     }).catch(error => console.log(error.message))
 }
 
-const isAdminOperator = async () => {
+export const isAdminOperator = async () => {
     const res = await readAllWithId(["customers",await getUserIdHandler()]);
-    // console.log(res.data().isAdmin, "-------- inside fu- -------n");
+     console.log(res.data().isAdmin, "-------- inside --------");
     isAdminVar = res.data().isAdmin;
   };
+
 
 
   

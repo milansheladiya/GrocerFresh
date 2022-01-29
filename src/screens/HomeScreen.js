@@ -19,6 +19,7 @@ import personal from "../../assets/personalD.png";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomTabNavigator from "../components/BottomTabNavigator";
+import {auth} from "../Firebase/auth";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -40,11 +41,11 @@ const HomeS = ({ navigation }) => {
   const [deal, setDeal] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
 
-  onchange = (nativeEvent) => {
+  console.log("User Id : ", auth.currentUser.uid);
+
+  const onchange = (nativeEvent) => {
     if (nativeEvent) {
-      const slider = Math.ceil(
-        nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width
-      );
+      const slider = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
       if (slider != activeImage) {
         setActiveImage(slider);
       }
@@ -390,7 +391,6 @@ const HomeS = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => navigation.navigate("WeeklyDealScreen")}
             >
-              {console.log(deal, deals[deal])}
               <Image
                 source={{ uri: deals[deal] }}
                 style={{
