@@ -31,6 +31,7 @@ const CartScreen = ({navigation}) => {
   const [cartProdId,setcartProdId] = useState([]);
   const [cartProd,setcartProd] = useState([]);
 
+
   const cartHandler = async () => {
     const uid = await getUserIdHandler();
     const carts = await readAllWithId(["customers",uid]);
