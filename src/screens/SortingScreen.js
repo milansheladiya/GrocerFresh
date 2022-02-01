@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+
+export default SortingScreen;import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
 
@@ -80,4 +81,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SortingScreen;
