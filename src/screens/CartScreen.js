@@ -36,6 +36,7 @@ const CartScreen = ({ navigation }) => {
     setCartTotal(parseFloat(cartTotal) - parseFloat(priceToLess));
   }
 
+
   const cartHandler = async () => {
     const uid = await getUserIdHandler();
     const carts = await readAllWithId(["customers", uid]);
