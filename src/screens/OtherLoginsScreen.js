@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    backgroundColor: "#34a853",
+    backgroundColor: "white",
   },
 
   facebookBtn: {

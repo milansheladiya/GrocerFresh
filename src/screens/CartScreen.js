@@ -5,19 +5,18 @@ import {
   Button,
   StyleSheet,
   Alert,
-  ScrollView,
-  Image,
   TouchableOpacity,
-  FlatList
+  FlatList,
 } from "react-native";
 import CartProducts from "../components/CartProducts";
 import { Fontisto } from "@expo/vector-icons";
-import {insertWithSetDocHandler} from "../Firebase/insert";
-import {getUserIdHandler} from "../Firebase/auth";
-import {readAllWithId} from "../Firebase/read";
+import { getFirestore } from "firebase/firestore";
+import { insertWithSetDocHandler } from "../Firebase/insert";
+import { getUserIdHandler } from "../Firebase/auth";
+import { readAllWithId } from "../Firebase/read";
 
-const CartScreen = ({navigation}) => {
-// const db = getFirestore();
+const CartScreen = ({ navigation }) => {
+  // const db = getFirestore();
 
   // const addData = async ()  => {
   //   const uid = await getUserIdHandler();
@@ -28,30 +27,49 @@ const CartScreen = ({navigation}) => {
   //   console.log(res , " -------- Cart ------ ");
   // }
 
-  const [cartProdId,setcartProdId] = useState([]);
-  const [cartProd,setcartProd] = useState([]);
+  const [cartProdId, setcartProdId] = useState([]);
+  const [cartProd, setcartProd] = useState([]);
+  const [firstRender, setFirstRender] = useState(false);
+  const [cartTotal,setCartTotal] = useState(0.0);
+
+  const CartPriceReducer = (priceToLess) => {
+    setCartTotal(parseFloat(cartTotal) - parseFloat(priceToLess));
+  }
 
 
   const cartHandler = async () => {
     const uid = await getUserIdHandler();
-    const carts = await readAllWithId(["customers",uid]);
-  
-    setcartProdId([...carts.data().cart]);
-    // console.log(cartProd);
+    const carts = await readAllWithId(["customers", uid]);
 
-    for (let i = 0; i < cartProdId.length; i++) {
-      //console.log(cartProdId[i].id);
-      
-      let res = await readAllWithId(["grocery",cartProdId[i].category,cartProdId[i].category,cartProdId[i].id]);    
-        // console.log(res.data());
-        setcartProd(cartProd => [...cartProd,{...res.data(),id:cartProdId[i].id,quantity:cartProdId[i].quantity}]);
+    for (let i = 0; i < carts.data().cart.length; i++) {
+
+      let res = await readAllWithId([
+        "grocery",
+        carts.data().cart[i].category,
+        carts.data().cart[i].category,
+        carts.data().cart[i].id,
+      ]);
+
+      setCartTotal(cartTotal =>  parseFloat(cartTotal) + (parseFloat(res.data().price) * parseFloat(carts.data().cart[i].quantity)));
+      // console.log(res.data());
+      setcartProd((cartProd) => [
+        ...cartProd,
+        {
+          ...res.data(),
+          id: carts.data().cart[i].id,
+          quantity: carts.data().cart[i].quantity,
+          category: carts.data().cart[i].category,
+        },
+      ]);
     }
-      //console.log(cartProd);
-  }
+  };
 
   useEffect(async () => {
-    await cartHandler();
-  },[]);
+    if (!firstRender) {
+      await cartHandler();
+      setFirstRender(true);
+    }
+  }, [firstRender]);
 
   return (
     <View style={styles.container}>
@@ -62,39 +80,35 @@ const CartScreen = ({navigation}) => {
         style={{ alignSelf: "center", padding: 10 }}
       />
 
-
-        <FlatList
+      <FlatList
         data={cartProd}
         keyExtractor={(item) => item.id}
-        renderItem={(item) => <CartProducts item={item}/>}
-        />
+        renderItem={(item) => <CartProducts item={item} cartProd={cartProd} setcartProd={setcartProd} CartPriceReducer={CartPriceReducer}/>}
+      />
 
-{/*         
-        <CartProducts />
-        <CartProducts />
-        <CartProducts /> */}
-
-
-
-{/* () => navigation.navigate("CheckoutScreen") */}
-          <TouchableOpacity onPress={() => navigation.navigate("CheckoutScreen")} style={{backgroundColor:'#548CFF',position:'absolute', bottom:10, width:'100%', height:60, justifyContent:'center', alignItems:'center'}}>
-              <Text style={{color:'black',fontSize:20}}>
-                Checkout : 100$
-              </Text>
-          </TouchableOpacity>
-        
-
+      <TouchableOpacity
+        onPress={() => navigation.navigate("CheckoutScreen",{totalCartPrice:cartTotal.toFixed(2)})}
+        style={{
+          backgroundColor: "#548CFF",
+          position: "absolute",
+          bottom: 10,
+          width: "100%",
+          height: 60,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: "black", fontSize: 20 }}>Checkout : ${cartTotal.toFixed(2)}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    flex:1
+    flex: 1,
   },
-  text:{
-
-  }
+  text: {},
 });
 
 export default CartScreen;

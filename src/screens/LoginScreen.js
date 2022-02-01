@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,81 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
+import {signInHandler,isSignedInHandler,auth,signOutHandler} from '../Firebase/auth';
+import {readAllWithId} from "../Firebase/read";
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isAdmin,setIsAdmin] = useState(null);
+
+  useEffect(async () => {
+    checkSigninHandler();
+  },[isAdmin]);
+
+  const isItAdmin = async () => {
+    const res = await readAllWithId(["customers",auth.currentUser.uid]);
+     console.log(res.data().isAdmin, "-------- inside    Login --------");
+     setIsAdmin(res.data().isAdmin);
+  }
+
+  const checkSigninHandler = async () => {
+    if(await isSignedInHandler())
+    {
+      isItAdmin();
+      if(isAdmin === null)
+        {
+
+        }
+        else if(isAdmin)
+      {
+          // if user admin
+          console.log("  Admin  ");
+        navigation.navigate("AdminHomeScreen");
+
+      }    
+      else if (!isAdmin)
+      {
+        navigation.navigate("HomeScreen");
+      }
+    }
+    else
+    {
+      console.log("User were not logged in!");
+    }
+  };
+
+
+  const sinInOperator = async () => {
+    await signOutHandler();
+      const res = await signInHandler(email,password);
+      console.log("------is Loggedin ----- : ",res);
+      if(res)
+      {
+        console.log("Is Admin : ============ " , isAdmin);
+        isItAdmin();
+        if(isAdmin === null)
+        {
+
+        }
+        else if(isAdmin)
+        {
+          console.log("Admin");
+          navigation.navigate("AdminHomeScreen");
+        }
+        else if(!isAdmin)
+        {
+          navigation.navigate("HomeScreen");
+        }
+      }
+      else
+      {
+        console.log("Wrong credentials ");
+        Alert.alert("Message", "Wrong credentials!");
+      }
+  }
 
   return (
     <View style={styles.container}>
@@ -19,12 +88,23 @@ const LoginScreen = ({navigation}) => {
         source={require("../../assets/GrocerFreshLogo.jpeg")}
         style={styles.img}
       />
-
+      <Text
+        style={{
+          fontSize: 20,
+          color: "red",
+          fontWeight: "300",
+          margin: 10,
+          marginBottom: 50,
+        }}
+      >
+        Welcome to Grocer Fresh
+      </Text>
       <View style={styles.inputView}>
         <TextInput
           placeholder="Email"
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          value={email}
+          onChangeText={setEmail}
           style={styles.textInput}
         />
       </View>
@@ -33,7 +113,8 @@ const LoginScreen = ({navigation}) => {
           placeholder="Password"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
-          onChangeText={(password) => setEmail(password)}
+          value={password}
+          onChangeText={setPassword}
           style={styles.textInput}
         />
       </View>
@@ -42,13 +123,16 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.forgotButton}>Forgot Password?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={() => navigation.navigate("HomeScreen")}>
+      <TouchableOpacity style={styles.loginBtn} onPress={sinInOperator}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
 
       <View style={styles.signUpArea}>
-        <Text style={{flex:2}}>Don't have any account?</Text>
-        <TouchableOpacity style={{flex:1}} onPress={() => navigation.navigate("SignupScreen")}>
+        <Text style={{ flex: 2 }}>Don't have any account?</Text>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={() => navigation.navigate("SignupScreen")}
+        >
           <Text style={styles.signUpText}>SignUp</Text>
         </TouchableOpacity>
       </View>
@@ -71,7 +155,7 @@ const styles = StyleSheet.create({
 
   inputView: {
     backgroundColor: "#D6E5FA",
-    borderRadius: 20,
+    borderRadius: 10,
     width: "70%",
     height: 45,
     marginBottom: 10,
@@ -98,16 +182,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    backgroundColor: "#113CFC",
+    backgroundColor: "lightblue",
+    borderWidth: 1,
   },
   loginText: {
-    color: "#F5F5F5",
-    fontWeight: "bold",
+    color: "black",
+    fontWeight: "400",
   },
   signUpArea: {
     marginTop: 20,
-    flexDirection:'row',
-    marginHorizontal:60
+    flexDirection: "row",
+    marginHorizontal: 60,
   },
 
   signUpText: {

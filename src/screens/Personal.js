@@ -14,33 +14,130 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
-import { personalData } from "./data";
+import { readAllHandler, readAllWithId } from "../Firebase/read";
+import { auth } from "../Firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import {UpdateDocuments} from "../Firebase/update";
 
 const { width, height } = Dimensions.get("screen");
 
 const Personal = ({ navigation }) => {
+
   const [currentState, setCurrentState] = useState("Home");
   const [searchValue, setSearchValue] = useState("");
-  const [n1, n2] = React.useState(1);
-  const [num, setNum] = React.useState({});
+  const [n1, n2] = useState(1);
+  const [num, setNum] = useState({});
   const [pageData, setPageData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filtered, setFiltered] = useState(false);
+  const [cartList, setCartList] = useState([]);
+  const [firstRender, setFirstRender] = useState(false);
+
+  const db = getFirestore();
+
+  useEffect(()=>{
+      console.log("use Effect Cart List : ",cartList);
+      cartList.forEach((doc) => {
+        setNum((num) => ({ ...num, [doc.id]: doc.quantity }));
+      });
+  },[cartList]);
+
+  // add to cart Screen
+  //action,id,category,quantity
+  const getCartDataFromFirebase = async () => {
+    let carts = await readAllWithId(["customers", auth.currentUser.uid]);
+    //---console.log("second......");
+    carts.data().cart.forEach((doc) => {
+      //console.log("Each cart details :" ,doc);
+      setCartList((cartList) => [...cartList, { ...doc }]);
+    });
+    
+    //synchronizCart();
+  };
+
+
+  const synchronizCart = ( id, category, quantity) => {
+    let tmp = [];
+    if(quantity === 0)
+    {
+       tmp = cartList.filter((cart) => cart.id !== id);
+      setCartList(tmp);
+      return;
+    }
+
+    let IsProductExistFlag = false;
+     tmp = cartList.map((doc) => {
+      //---console.log(doc.id," === ",id);
+      console.log(doc.category," == category == ",category);
+      if(doc.category !== category)
+      {
+        return doc;
+      }
+      else
+      {
+        console.log(doc.id," == Vs == ",id);
+        if (doc.id === id) {
+          console.log("match Id ....");
+          doc.quantity = quantity;
+          IsProductExistFlag = true;
+          return doc;
+        } else {
+          console.log("didn't match Id ....");
+          return doc;
+        }
+      }
+    });
+    if(!IsProductExistFlag)
+    {
+      tmp.push({
+        "id": id,
+        "category": category,
+        "quantity": quantity,
+      });
+    }
+    setCartList(tmp);
+    //-------console.log("Tmp : " ,tmp);
+  };
+
+    const updateCartToFirebase = async () => {
+      console.log("Final Update to Firebase : ", cartList);
+        await UpdateDocuments(["customers",auth.currentUser.uid],{
+          "cart":cartList
+        });
+        Alert.alert("Cart Message", "Cart has been updated!");
+    };
 
   const pageType = navigation.state?.params?.type || "Personal";
-  // if(pageType == 'cart'){
-  //   pageData = []
-  // }
+
+  const productReadHandler = async () => {
+    const res = await readAllHandler(["grocery", pageType, pageType]);
+    //----console.log("First calling.....");
+    //-----console.log("category : ",pageType);
+    const tmpProdArray = [];
+    res.forEach((doc) => {
+       // ----console.log(doc.id, " => ", doc.data());
+       tmpProdArray.push({ ...doc.data(), id: doc.id, category: pageType });
+    });
+    setPageData((pageData) => [
+      ...tmpProdArray
+    ]);
+    getCartDataFromFirebase();
+  };
 
   useEffect(() => {
-    const data = personalData[pageType] || [];
-    setPageData(data);
+      console.log("first Use effect calling");
+      productReadHandler();
+
   }, [pageType]);
 
   const increment = (key) => {
     if ((num[key] || 0) < 10) {
       setNum({ ...num, [key]: (num[key] || 0) + 1 });
       n2(n1 + 15);
+      //synchronizCart()
+      //console.log(num[key] == undefined ? 0 : num[key]+1);
+      console.log(num);
+      synchronizCart(key,pageType,((num[key] || 0) + 1));
     } else {
       alert("Maxium Quantity limit");
     }
@@ -49,6 +146,7 @@ const Personal = ({ navigation }) => {
     if (num[key] > 0) {
       setNum({ ...num, [key]: num[key] - 1 });
       n2(n1 - 15);
+      synchronizCart(key,pageType,((num[key] || 0) - 1));
     } else {
       setNum(0);
     }
@@ -70,6 +168,7 @@ const Personal = ({ navigation }) => {
   };
 
   const finalData = filtered ? filteredData : pageData;
+  //console.log(pageType);
   return (
     <View
       style={{
@@ -80,7 +179,7 @@ const Personal = ({ navigation }) => {
     >
       <View
         style={{
-          marginTop: 0,
+          marginTop: -30,
           width: Dimensions.get("window").width,
           backgroundColor: "lightblue",
           flexDirection: "row",
@@ -117,6 +216,17 @@ const Personal = ({ navigation }) => {
         >
           {pageType}
         </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("CartScreen")}
+          style={{ paddingLeft: 10 }}
+        >
+          <Icon
+            name="ios-cart"
+            size={30}
+            color={"black"}
+            style={{ margin: 5, marginHorizontal: -10 }}
+          />
+        </TouchableOpacity>
       </View>
 
       {/* Search View */}
@@ -169,7 +279,7 @@ const Personal = ({ navigation }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            alert("sorting");
+            navigation.navigate("SortingScreen", { type: pageType });
           }}
         >
           <Text
@@ -225,6 +335,7 @@ const Personal = ({ navigation }) => {
           {finalData.length ? (
             finalData.map((data) => (
               <View
+                key={data.id}
                 style={{
                   borderColor: "black",
                   borderWidth: 1,
@@ -235,7 +346,9 @@ const Personal = ({ navigation }) => {
                   height: 230,
                 }}
               >
-                <TouchableOpacity onPress={() => alert("Moisturizer")}>
+                <TouchableOpacity
+                  onPress={() => Alert.alert("Message", data.description)}
+                >
                   <Image source={{ uri: data.url }} style={styles.imagestyle} />
                 </TouchableOpacity>
 
@@ -263,14 +376,15 @@ const Personal = ({ navigation }) => {
                     }}
                   >
                     <Text style={styles.textstyle}>{data.name}</Text>
+                    <Text style={styles.ratestyle}>$ {data.price}</Text>
                     <View
                       style={{
                         flexDirection: "row",
                         alignItems: "center",
                         borderRadius: 10,
                         justifyContent: "center",
-                        marginTop: 10,
-                        height: 40
+                        marginTop: 2,
+                        height: 40,
                       }}
                     >
                       <Icon
@@ -293,6 +407,12 @@ const Personal = ({ navigation }) => {
                         size={30}
                         onPress={() => increment(`${data.id}`)}
                         color={"#1C6DD0"}
+                      />
+                      <Icon
+                        name="heart"
+                        size={25}
+                        color={"red"}
+                        style={{ marginHorizontal: 2 }}
                       />
                     </View>
                   </View>
@@ -322,7 +442,7 @@ const Personal = ({ navigation }) => {
           title="Add To Cart"
           color={"black"}
           onPress={() => {
-            Alert.alert("Cart Message", "Item added to cart");
+            updateCartToFirebase();
           }}
         />
       </View>
