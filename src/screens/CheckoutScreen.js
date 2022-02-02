@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Card, Icon, CheckBox } from "react-native-elements";
+import {insertHandler} from "../Firebase/insert";
+import { auth } from "../Firebase/auth";
+import {serverTimestamp} from "firebase/firestore";
+import {deleteFields} from "../Firebase/delete";
 
 const CheckoutScreen = ({ navigation }) => {
   const [check1, setCheck1] = useState(true);
@@ -14,6 +18,9 @@ const CheckoutScreen = ({ navigation }) => {
   const [value, setValue] = useState(null);
 
   const [ totalCartPrice,setTotalCartPrice ] = useState(navigation.getParam("totalCartPrice"));
+
+  const [cartProd,setCartProd] = useState(navigation.getParam("cartProd"));
+
 
   //console.log(navigation.getParam("totalCartPrice"));
 
@@ -24,6 +31,40 @@ const CheckoutScreen = ({ navigation }) => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [iconi, setIconi] = useState("create-outline");
+
+  const placeOrderHandler = () => {
+
+    let prodData = [];
+    let tax = 0;
+
+   cartProd.forEach(obj => {
+      prodData.push({
+       "id":obj.id,
+       "name":obj.name,
+       "price":obj.price,
+       "quantity":obj.quantity,
+       "url":obj.url,
+     })
+    });
+
+    const data = {
+      "uid":auth.currentUser.uid,
+      "address":address,
+      "product":prodData,
+      "total":totalCartPrice,
+      "tax":(totalCartPrice * 0.15).toFixed(2),
+      "timestamp":serverTimestamp(),
+      "deliveryMode":check1 ? "Home Delivery":"Pickup",
+    }
+
+    let res = insertHandler(["orders"],data);
+
+    const resDelete = deleteFields(["customers",auth.currentUser.uid],"cart");
+
+    console.log(data);
+
+    navigation.navigate("DeliveryTimeScreen");
+  }
 
   return (
     <View style={styles.container}>
@@ -43,7 +84,7 @@ const CheckoutScreen = ({ navigation }) => {
             style={{ flexDirection: "column", flex: 1, alignItems: "flex-end" }}
           >
             <Text style={styles.styl}>${totalCartPrice} </Text>
-            <Text style={styles.styl}>${totalCartPrice * 0.15} </Text>
+            <Text style={styles.styl}>${(totalCartPrice * 0.15).toFixed(2)} </Text>
           </View>
         </View>
         <Card.Divider />
@@ -123,7 +164,7 @@ const CheckoutScreen = ({ navigation }) => {
         />
       </Card>
 
-      <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate("DeliveryTimeScreen")}>
+      <TouchableOpacity style={styles.btn} onPress={placeOrderHandler}>
         <Text style={{ color: "white", fontWeight: "bold" }}>
           
           Place Order

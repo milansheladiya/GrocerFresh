@@ -86,7 +86,7 @@ const CartScreen = ({ navigation }) => {
       />
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("CheckoutScreen",{totalCartPrice:cartTotal.toFixed(2)})}
+        onPress={() => navigation.navigate("CheckoutScreen",{totalCartPrice:cartTotal.toFixed(2),cartProd:cartProd})}
         style={{
           backgroundColor: "#548CFF",
           position: "absolute",

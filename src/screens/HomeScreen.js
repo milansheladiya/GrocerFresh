@@ -19,7 +19,7 @@ import personal from "../../assets/personalD.png";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomTabNavigator from "../components/BottomTabNavigator";
-import {auth} from "../Firebase/auth";
+import {auth,signOutHandler} from "../Firebase/auth";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -52,6 +52,11 @@ const HomeS = ({ navigation }) => {
     }
   };
 
+  const logOutHandler = () => {
+     signOutHandler();
+     navigation.navigate("LoginScreen");
+  }
+
   return (
     <View
       style={{
@@ -66,17 +71,26 @@ const HomeS = ({ navigation }) => {
           width: Dimensions.get("window").width,
           backgroundColor: "lightblue",
           flexDirection: "row",
-          justifyContent: "flex-start",
+          // justifyContent: "flex-start",
           zIndex: -1,
           position: "relative",
-          paddingTop: 40,
+          paddingTop: 30,
+          justifyContent:'space-around'
         }}
       >
+        <TouchableOpacity style={{padding:5}} onPress={logOutHandler}>
+          <Icon
+            name="log-out"
+            size={30}
+            color={"#F90716"}
+            style={{marginLeft:15 }}
+          />
+        </TouchableOpacity>
         <Text
           style={{
-            width: Dimensions.get("window").width,
+             width: Dimensions.get("window").width-30,
             marginHorizontal: "auto",
-            marginVertical: 5,
+            // marginVertical: 5,
             paddingVertical: 6,
             fontSize: 23,
             color: "black",
@@ -90,12 +104,12 @@ const HomeS = ({ navigation }) => {
           Grocer Fresh
         </Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate("CartScreen")}>
+        <TouchableOpacity style={{padding:5}} onPress={() => navigation.navigate("CartScreen")}>
           <Icon
             name="ios-cart"
             size={30}
             color={"black"}
-            style={{ margin: 5, marginHorizontal: -50 }}
+            style={{ marginRight:20}}
           />
         </TouchableOpacity>
       </View>

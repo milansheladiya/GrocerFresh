@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 import { Slider, Divider, CheckBox, Icon } from "react-native-elements";
 
 const FilterScreen = ({ navigation }) => {
-  const [minValue, setMinValue] = useState(0);
+  const [minValue, setMinValue] = useState(2);
   const [maxValue, setMaxValue] = useState(10);
 
   // list of categories
@@ -20,6 +20,25 @@ const FilterScreen = ({ navigation }) => {
   const [CatCheck5, setCatCheck5] = useState(false);
   const [CatCheck6, setCatCheck6] = useState(false);
   const pageType = navigation.state?.params?.type || "Personal";
+  
+  const [filteredData,setFilteredData] = useState(navigation.getParam("fData"));
+
+  const prodData = navigation.getParam("pData");
+
+  useEffect(() => {
+    console.log("filter ",filteredData);
+  },[filteredData]);
+
+  const filterHandler = () => {
+    const tmp  = prodData.filter((data) => {
+       return minValue <= data.price && maxValue >= data.price
+    });
+    //console.log(tmp);
+    setFilteredData(tmp);
+    
+  }
+
+
 
   return (
     <View style={(styles.container, styles.contentView)}>
@@ -105,12 +124,12 @@ const FilterScreen = ({ navigation }) => {
       <ScrollView>
         <CheckBox
           checked={CatCheck1}
-          title="vegetables"
+          title="With Offer"
           onPress={() => setCatCheck1(!CatCheck1)}
           checked={CatCheck1}
         />
 
-        <CheckBox
+        {/* <CheckBox
           checked={CatCheck2}
           title="Fruits"
           onPress={() => setCatCheck2(!CatCheck2)}
@@ -143,10 +162,10 @@ const FilterScreen = ({ navigation }) => {
           title="dairy"
           onPress={() => setCatCheck6(!CatCheck6)}
           checked={CatCheck6}
-        />
+        /> */}
       </ScrollView>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={filterHandler}>
         <Text>Apply </Text>
       </TouchableOpacity>
     </View>

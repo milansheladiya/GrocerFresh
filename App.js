@@ -17,6 +17,7 @@ import NewProductScreen from "./src/screens/Admin/NewProductScreen";
 import CategoryScreen from "./src/screens/Admin/CategoryScreen";
 import AdminProductScreen from "./src/screens/Admin/AdminProductScreen";
 import AccountScreen from "./src/screens/AccountScreen";
+import AdminOrderList from "./src/screens/Admin/AdminOrderList";
 
 const navigator = createStackNavigator(
   {
@@ -37,6 +38,7 @@ const navigator = createStackNavigator(
     AdminProductScreen:AdminProductScreen,
     Personal: Personal,
     AccountScreen: AccountScreen,
+    AdminOrderList:AdminOrderList
   },
   {
     initialRouteName: "LoginScreen",
