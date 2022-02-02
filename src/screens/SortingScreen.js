@@ -10,9 +10,6 @@ const SortingScreen = ({ navigation,route }) => {
   
   const prodData = navigation.getParam("pData");
 
-
-
-
   useEffect(() => {
     sortScreen();
   },[check1,check2]);
@@ -80,3 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
+export default SortingScreen;
