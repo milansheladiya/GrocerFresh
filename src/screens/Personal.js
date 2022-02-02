@@ -17,11 +17,19 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { readAllHandler, readAllWithId } from "../Firebase/read";
 import { auth } from "../Firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import {UpdateDocuments} from "../Firebase/update";
+import { UpdateDocuments } from "../Firebase/update";
+import { NavigationEvents } from "react-navigation";
 
 const { width, height } = Dimensions.get("screen");
 
 const Personal = ({ navigation }) => {
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      alert("Screen is focused");
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const [currentState, setCurrentState] = useState("Home");
   const [searchValue, setSearchValue] = useState("");
@@ -35,12 +43,12 @@ const Personal = ({ navigation }) => {
 
   const db = getFirestore();
 
-  useEffect(()=>{
-      console.log("use Effect Cart List : ",cartList);
-      cartList.forEach((doc) => {
-        setNum((num) => ({ ...num, [doc.id]: doc.quantity }));
-      });
-  },[cartList]);
+  useEffect(() => {
+    console.log("use Effect Cart List : ", cartList);
+    cartList.forEach((doc) => {
+      setNum((num) => ({ ...num, [doc.id]: doc.quantity }));
+    });
+  }, [cartList]);
 
   // add to cart Screen
   //action,id,category,quantity
@@ -51,31 +59,26 @@ const Personal = ({ navigation }) => {
       //console.log("Each cart details :" ,doc);
       setCartList((cartList) => [...cartList, { ...doc }]);
     });
-    
+
     //synchronizCart();
   };
 
-
-  const synchronizCart = ( id, category, quantity) => {
+  const synchronizCart = (id, category, quantity) => {
     let tmp = [];
-    if(quantity === 0)
-    {
-       tmp = cartList.filter((cart) => cart.id !== id);
+    if (quantity === 0) {
+      tmp = cartList.filter((cart) => cart.id !== id);
       setCartList(tmp);
       return;
     }
 
     let IsProductExistFlag = false;
-     tmp = cartList.map((doc) => {
+    tmp = cartList.map((doc) => {
       //---console.log(doc.id," === ",id);
-      console.log(doc.category," == category == ",category);
-      if(doc.category !== category)
-      {
+      console.log(doc.category, " == category == ", category);
+      if (doc.category !== category) {
         return doc;
-      }
-      else
-      {
-        console.log(doc.id," == Vs == ",id);
+      } else {
+        console.log(doc.id, " == Vs == ", id);
         if (doc.id === id) {
           console.log("match Id ....");
           doc.quantity = quantity;
@@ -87,25 +90,24 @@ const Personal = ({ navigation }) => {
         }
       }
     });
-    if(!IsProductExistFlag)
-    {
+    if (!IsProductExistFlag) {
       tmp.push({
-        "id": id,
-        "category": category,
-        "quantity": quantity,
+        id: id,
+        category: category,
+        quantity: quantity,
       });
     }
     setCartList(tmp);
     //-------console.log("Tmp : " ,tmp);
   };
 
-    const updateCartToFirebase = async () => {
-      console.log("Final Update to Firebase : ", cartList);
-        await UpdateDocuments(["customers",auth.currentUser.uid],{
-          "cart":cartList
-        });
-        Alert.alert("Cart Message", "Cart has been updated!");
-    };
+  const updateCartToFirebase = async () => {
+    console.log("Final Update to Firebase : ", cartList);
+    await UpdateDocuments(["customers", auth.currentUser.uid], {
+      cart: cartList,
+    });
+    Alert.alert("Cart Message", "Cart has been updated!");
+  };
 
   const pageType = navigation.state?.params?.type || "Personal";
 
@@ -115,19 +117,16 @@ const Personal = ({ navigation }) => {
     //-----console.log("category : ",pageType);
     const tmpProdArray = [];
     res.forEach((doc) => {
-       // ----console.log(doc.id, " => ", doc.data());
-       tmpProdArray.push({ ...doc.data(), id: doc.id, category: pageType });
+      // ----console.log(doc.id, " => ", doc.data());
+      tmpProdArray.push({ ...doc.data(), id: doc.id, category: pageType });
     });
-    setPageData((pageData) => [
-      ...tmpProdArray
-    ]);
+    setPageData((pageData) => [...tmpProdArray]);
     getCartDataFromFirebase();
   };
 
   useEffect(() => {
-      console.log("first Use effect calling");
-      productReadHandler();
-
+    console.log("first Use effect calling");
+    productReadHandler();
   }, [pageType]);
 
   const increment = (key) => {
@@ -137,7 +136,7 @@ const Personal = ({ navigation }) => {
       //synchronizCart()
       //console.log(num[key] == undefined ? 0 : num[key]+1);
       console.log(num);
-      synchronizCart(key,pageType,((num[key] || 0) + 1));
+      synchronizCart(key, pageType, (num[key] || 0) + 1);
     } else {
       alert("Maxium Quantity limit");
     }
@@ -146,7 +145,7 @@ const Personal = ({ navigation }) => {
     if (num[key] > 0) {
       setNum({ ...num, [key]: num[key] - 1 });
       n2(n1 - 15);
-      synchronizCart(key,pageType,((num[key] || 0) - 1));
+      synchronizCart(key, pageType, (num[key] || 0) - 1);
     } else {
       setNum(0);
     }
@@ -167,7 +166,7 @@ const Personal = ({ navigation }) => {
     setFilteredData(newData);
   };
 
-  const finalData = filtered ? filteredData : pageData;
+  let finalData = filtered ? filteredData : pageData;
   //console.log(pageType);
   return (
     <View
@@ -177,6 +176,11 @@ const Personal = ({ navigation }) => {
         height: height,
       }}
     >
+      <NavigationEvents
+        onDidFocus={() => {
+          handleSearch();
+        }}
+      />
       <View
         style={{
           marginTop: -30,
@@ -279,7 +283,10 @@ const Personal = ({ navigation }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("SortingScreen", { type: pageType });
+            navigation.navigate("SortingScreen", {
+              type: pageType,
+              pData: pageData,
+            });
           }}
         >
           <Text
@@ -288,7 +295,7 @@ const Personal = ({ navigation }) => {
               margin: 5,
               fontWeight: "500",
               textAlign: "center",
-              position: "fixed",
+              position: "relative",
               color: "black",
             }}
           >
@@ -298,7 +305,7 @@ const Personal = ({ navigation }) => {
 
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("FilterScreen", { type: pageType })
+            navigation.navigate("FilterScreen", { type: pageType,pData: pageData, fData:finalData})
           }
         >
           <Text

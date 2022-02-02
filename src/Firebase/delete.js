@@ -1,5 +1,5 @@
 import { getFirestore } from "firebase/firestore";
-import { doc, deleteDoc,updateDoc } from "firebase/firestore";
+import { doc, deleteDoc,updateDoc,deleteField } from "firebase/firestore";
 
 const db = getFirestore();
 
@@ -21,26 +21,27 @@ export const deleteDocument = async (arr) => {
 
 //Delete fields : https://firebase.google.com/docs/firestore/manage-data/delete-data#fields
 
-export const deleteField = async (arr,fieldName) => {
+export const deleteFields = async (arr,fieldName) => {
+    console.log(arr[0], "===> ", arr[1]," ====> ",fieldName);
 
     if(arr.length === 2){
         const docRef =  doc(db, arr[0],arr[1]);
         const res = await updateDoc(docRef, {
-            fieldName: deleteField()
+            [fieldName]: deleteField()
         });
         return res;
     }
     else if(arr.length === 3){
         const docRef =  doc(db, arr[0],arr[1],arr[2]);
         const res = await updateDoc(docRef, {
-            fieldName: deleteField()
+            [fieldName]: deleteField()
         });
         return res;
     }
     else if(arr.length === 4){
         const docRef =  doc(db, arr[0],arr[1],arr[2],arr[3]);
         const res = await updateDoc(docRef, {
-            fieldName: deleteField()
+            [fieldName]: deleteField()
         });
         return res;
     }

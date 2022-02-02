@@ -1,9 +1,27 @@
-import React,{ useState} from "react";
+import React,{ useEffect, useState} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {isSignedInHandler,signOutHandler} from "../../Firebase/auth";
 
 const AdminHomeScreen = props => {
     
     const [adminName,setAdminName] = useState("Milan");
+
+    useEffect(() => {
+      const res = isSignedInHandler();
+      if(!res)
+      {
+        console.log("Admin not logged in---------->");
+        logOutHandler();
+      }
+      else{
+        console.log("Admin logged in ~~~~~~~~~~~~~~>");
+      }
+    },[]);
+
+    const logOutHandler = () => {
+      signOutHandler();
+      props.navigation.navigate("LoginScreen");
+   }
 
   return (
     <View>
@@ -16,9 +34,12 @@ const AdminHomeScreen = props => {
         <TouchableOpacity style={styles.button2} onPress={() => props.navigation.navigate("CategoryScreen")}>
           <Text style={styles.buttonText}>Modify Product</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button1} onPress={() => props.navigation.navigate("AdminOrderList")}>
+          <Text style={styles.buttonText}>Order List</Text>
+        </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={() => {}}>
+      <TouchableOpacity style={styles.logoutButton} onPress={logOutHandler}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>
@@ -42,12 +63,12 @@ const styles = StyleSheet.create({
   },
   boxLayout: {
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-around",
     margin: 20,
-    marginVertical: 50,
+    marginVertical: 10,
     padding: 10,
-    height: 300,
+    height: 500,
     backgroundColor: "#F7F6F2",
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
@@ -55,6 +76,9 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     //borderWidth:1,
     borderRadius: 20,
+    // flexWrap:'wrap',
+    // justifyContent: 'center',
+    // alignItems: 'center'
   },
   button1: {
     padding: 20,
@@ -95,7 +119,7 @@ const styles = StyleSheet.create({
       borderRadius:25,
       backgroundColor:'#070D59',
       position: 'absolute',
-      bottom: -200,
+      bottom: -100,
   },
   logoutButtonText:{
     fontWeight:'bold',

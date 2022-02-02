@@ -10,20 +10,28 @@ import {
 } from "react-native";
 import {signInHandler,isSignedInHandler,auth,signOutHandler} from '../Firebase/auth';
 import {readAllWithId} from "../Firebase/read";
+import { NavigationEvents } from "react-navigation";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAdmin,setIsAdmin] = useState(null);
+  const [userName,setUserName] = useState('');
 
   useEffect(async () => {
     checkSigninHandler();
   },[isAdmin]);
 
   const isItAdmin = async () => {
+    try{
     const res = await readAllWithId(["customers",auth.currentUser.uid]);
      console.log(res.data().isAdmin, "-------- inside    Login --------");
      setIsAdmin(res.data().isAdmin);
+     setUserName(res.data().name);
+    }catch(err)
+    {
+      console.log(err.message);
+    }
   }
 
   const checkSigninHandler = async () => {
@@ -52,28 +60,32 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
+  useEffect(() => {
+    if(isAdmin === null)
+    {
+        console.log("null");
+    }
+    else if(isAdmin)
+    {
+      console.log("Admin");
+      navigation.navigate("AdminHomeScreen");
+    }
+    else if(!isAdmin)
+    {
+      navigation.navigate("HomeScreen");
+    }
+  },[isAdmin]);
 
   const sinInOperator = async () => {
     await signOutHandler();
       const res = await signInHandler(email,password);
       console.log("------is Loggedin ----- : ",res);
+      //setIsAdmin(null);
       if(res)
       {
         console.log("Is Admin : ============ " , isAdmin);
         isItAdmin();
-        if(isAdmin === null)
-        {
-
-        }
-        else if(isAdmin)
-        {
-          console.log("Admin");
-          navigation.navigate("AdminHomeScreen");
-        }
-        else if(!isAdmin)
-        {
-          navigation.navigate("HomeScreen");
-        }
+        
       }
       else
       {
@@ -84,6 +96,11 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <NavigationEvents
+        onDidFocus={() => {
+          checkSigninHandler();
+        }}
+      />
       <Image
         source={require("../../assets/GrocerFreshLogo.jpeg")}
         style={styles.img}
