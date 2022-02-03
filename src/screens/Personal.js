@@ -23,6 +23,8 @@ import { NavigationEvents } from "react-navigation";
 const { width, height } = Dimensions.get("screen");
 
 const Personal = ({ navigation }) => {
+
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       alert("Screen is focused");
@@ -40,6 +42,8 @@ const Personal = ({ navigation }) => {
   const [filtered, setFiltered] = useState(false);
   const [cartList, setCartList] = useState([]);
   const [firstRender, setFirstRender] = useState(false);
+  const [iconName, setIconName] = useState("heart-outline");
+  const [favList,setFavList] = useState([]);
 
   const db = getFirestore();
 
@@ -50,8 +54,6 @@ const Personal = ({ navigation }) => {
     });
   }, [cartList]);
 
-  // add to cart Screen
-  //action,id,category,quantity
   const getCartDataFromFirebase = async () => {
     let carts = await readAllWithId(["customers", auth.currentUser.uid]);
     //---console.log("second......");
@@ -60,6 +62,8 @@ const Personal = ({ navigation }) => {
       setCartList((cartList) => [...cartList, { ...doc }]);
     });
 
+
+      setFavList(carts.data().favorite);
     //synchronizCart();
   };
 
@@ -112,15 +116,35 @@ const Personal = ({ navigation }) => {
   const pageType = navigation.state?.params?.type || "Personal";
 
   const productReadHandler = async () => {
+
+    console.log("---------------------------------------------------");
+    console.log(favList);
+    console.log("---------------------------------------------------");
+
     const res = await readAllHandler(["grocery", pageType, pageType]);
-    //----console.log("First calling.....");
     //-----console.log("category : ",pageType);
     const tmpProdArray = [];
     res.forEach((doc) => {
       // ----console.log(doc.id, " => ", doc.data());
-      tmpProdArray.push({ ...doc.data(), id: doc.id, category: pageType });
+      console.log(favList.find(lst => lst === doc.id));
+      let Favflag = (doc.id === (favList.find(lst => lst === doc.id)) ? true:false);
+      console.log(Favflag === undefined ? false : true);
+      tmpProdArray.push({ ...doc.data(), id: doc.id, category: pageType,isFavorite:Favflag});
     });
     setPageData((pageData) => [...tmpProdArray]);
+
+    //------------------------------
+
+    // favList.forEach((fav) => {
+    //   //console.log(fav);
+    //   let objIndex = finalData.findIndex((obj => obj.id == fav));
+    //   //console.log(objIndex);
+    //   finalData[objIndex].isFavorite = true;
+    // });
+
+    //-----------------------------
+
+    console.log("page Data --------------> ",pageData);
     getCartDataFromFirebase();
   };
 
@@ -165,6 +189,23 @@ const Personal = ({ navigation }) => {
     }
     setFilteredData(newData);
   };
+
+
+  const toggleFavHandler = (favId) => {
+     let objIndex = finalData.findIndex((obj => obj.id == favId));
+     if(finalData[objIndex].isFavorite)
+     {
+      finalData[objIndex].isFavorite = false;
+      console.log("false");
+     }
+     else
+     {
+      finalData[objIndex].isFavorite = true;
+      console.log("true");
+
+     }
+     
+  }
 
   let finalData = filtered ? filteredData : pageData;
   //console.log(pageType);
@@ -415,12 +456,15 @@ const Personal = ({ navigation }) => {
                         onPress={() => increment(`${data.id}`)}
                         color={"#1C6DD0"}
                       />
+                      <TouchableOpacity onPress={() => {
+                        toggleFavHandler(data.id);
+                      }}>
                       <Icon
-                        name="heart"
+                        name={data.isFavorite === true ? "heart" : "heart-outline"}
                         size={25}
                         color={"red"}
-                        style={{ marginHorizontal: 2 }}
-                      />
+                        style={{ marginHorizontal: 2,}}/>
+                        </TouchableOpacity>
                     </View>
                   </View>
                 </View>

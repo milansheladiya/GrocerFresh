@@ -1,3 +1,9 @@
 // dropdown manu component
 https://hossein-zare.github.io/react-native-dropdown-picker-website/docs/usage
 
+
+
+to send Email,
+https://www.emailjs.com/docs/sdk/send/
+
+Third party app to send email via email.js : https://www.fastmail.com/mail/Inbox/?u=96694006
