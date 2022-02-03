@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,91 +8,50 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import {signInHandler,isSignedInHandler,auth,signOutHandler} from '../Firebase/auth';
+import {signInHandler,isSignedInHandler,auth,signOutHandler,isAdminUser} from '../Firebase/auth';
 import {readAllWithId} from "../Firebase/read";
 import { NavigationEvents } from "react-navigation";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isAdmin,setIsAdmin] = useState(null);
-  const [userName,setUserName] = useState('');
 
   useEffect(async () => {
-    checkSigninHandler();
-  },[isAdmin]);
-
-  const isItAdmin = async () => {
-    try{
-    const res = await readAllWithId(["customers",auth.currentUser.uid]);
-     console.log(res.data().isAdmin, "-------- inside    Login --------");
-     setIsAdmin(res.data().isAdmin);
-     setUserName(res.data().name);
-    }catch(err)
-    {
-      console.log(err.message);
-    }
-  }
-
-  const checkSigninHandler = async () => {
-    if(await isSignedInHandler())
-    {
-      isItAdmin();
-      if(isAdmin === null)
-        {
-
-        }
-        else if(isAdmin)
-      {
-          // if user admin
-          console.log("  Admin  ");
+    if (await isSignedInHandler()) {
+      const adminUser = await isAdminUser();
+      if (adminUser) {
+        // if user admin
+        console.log("AdminHomeScreen");
         navigation.navigate("AdminHomeScreen");
-
-      }    
-      else if (!isAdmin)
-      {
+      } else if (!adminUser) {
+        console.log("HomeScreen");
         navigation.navigate("HomeScreen");
       }
-    }
-    else
-    {
+    } else {
       console.log("User were not logged in!");
     }
-  };
-
-  useEffect(() => {
-    if(isAdmin === null)
-    {
-        console.log("null");
-    }
-    else if(isAdmin)
-    {
-      console.log("Admin");
-      navigation.navigate("AdminHomeScreen");
-    }
-    else if(!isAdmin)
-    {
-      navigation.navigate("HomeScreen");
-    }
-  },[isAdmin]);
+  }, []);
 
   const sinInOperator = async () => {
-    await signOutHandler();
-      const res = await signInHandler(email,password);
-      console.log("------is Loggedin ----- : ",res);
-      //setIsAdmin(null);
-      if(res)
-      {
-        console.log("Is Admin : ============ " , isAdmin);
-        isItAdmin();
-        
+    const res = await signInHandler(email, password);
+    console.log(res, "------ Login -----");
+    if (res) {
+      const adminUser = await isAdminUser();
+      if (adminUser) {
+        console.log("Admin");
+        console.log('details entered are correct');
+        navigation.navigate("AdminHomeScreen");
+      } else if (!adminUser) {
+        console.log("HomeScreen");
+        console.log('details entered are correct');
+        navigation.navigate("HomeScreen");
       }
-      else
-      {
-        console.log("Wrong credentials ");
-        Alert.alert("Message", "Wrong credentials!");
-      }
-  }
+    } else {
+      console.log("Wrong credentials");
+      console.log('details entered are not correct');
+      Alert.alert("Messagge", "Wrong Credentials");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -109,7 +68,7 @@ const LoginScreen = ({ navigation }) => {
         style={{
           fontSize: 20,
           color: "red",
-          fontWeight: "300",
+          fontWeight: "200",
           margin: 10,
           marginBottom: 50,
         }}
@@ -119,7 +78,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.inputView}>
         <TextInput
           placeholder="Email"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#f003f5c"
           value={email}
           onChangeText={setEmail}
           style={styles.textInput}
@@ -128,7 +87,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.inputView}>
         <TextInput
           placeholder="Password"
-          placeholderTextColor="#003f5c"
+          placeholderTextColor="#f003f5c"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
@@ -172,7 +131,7 @@ const styles = StyleSheet.create({
 
   inputView: {
     backgroundColor: "#D6E5FA",
-    borderRadius: 10,
+    borderRadius: 20,
     width: "70%",
     height: 45,
     marginBottom: 10,

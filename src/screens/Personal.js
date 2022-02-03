@@ -113,6 +113,10 @@ const Personal = ({ navigation }) => {
     Alert.alert("Cart Message", "Cart has been updated!");
   };
 
+  const add = () =>{
+    
+  }
+
   const pageType = navigation.state?.params?.type || "Personal";
 
   const productReadHandler = async () => {
@@ -286,7 +290,7 @@ const Personal = ({ navigation }) => {
         }}
       >
         <TextInput
-          placeholder=" Search"
+          placeholder="Search for items"
           value={searchValue}
           onChangeText={(e) => setSearchValue(e)}
           style={{
@@ -399,6 +403,19 @@ const Personal = ({ navigation }) => {
                 >
                   <Image source={{ uri: data.url }} style={styles.imagestyle} />
                 </TouchableOpacity>
+
+                <Icon
+                  name="heart-circle"
+                  size={30}
+                  color={"red"}
+                  onPress={() => console.log("Fav item")}
+                  style={{
+                    marginHorizontal: 5,
+                    zIndex: 3,
+                    marginVertical: -106,
+                    marginBottom: 80,
+                  }}
+                />
 
                 <View
                   style={{
@@ -514,6 +531,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     backgroundColor: "#000",
     alignSelf: "center",
+    zIndex: -3,
   },
 
   textstyle: {

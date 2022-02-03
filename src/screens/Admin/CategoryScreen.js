@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import {readAllHandler} from "../../Firebase/read";
+import { readAllHandler } from "../../Firebase/read";
 import DropDownPicker from "react-native-dropdown-picker";
+import Icon from "react-native-vector-icons/Ionicons";
 // Dropdown manu :  https://hossein-zare.github.io/react-native-dropdown-picker-website/docs/usage
 
 const NewProductScreen = (props) => {
   const [pageTitle, setPageTitle] = useState("Modify Product by Category");
-  const [firstRender,setFirstRender] = useState(false);
-
+  const [firstRender, setFirstRender] = useState(false);
 
   // for dropdown menu
   const [open, setOpen] = useState(false);
@@ -30,8 +30,8 @@ const NewProductScreen = (props) => {
   const getCategoryHandler = async () => {
     const res = await readAllHandler(["grocery"]);
     res.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
-        });
+      console.log(doc.id, " => ", doc.data());
+    });
   };
 
   // useEffect(async () => {
@@ -43,8 +43,18 @@ const NewProductScreen = (props) => {
   // },[]);
 
   return (
-    <View>
+    <View style={{ paddingTop: 60 }}>
       <View style={styles.titleOuter}>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("AdminHomeScreen")}
+        >
+          <Icon
+            name="arrow-back"
+            size={30}
+            color={"black"}
+            style={{ margin: 10, padding: 11 }}
+          />
+        </TouchableOpacity>
         <Text style={styles.title}>{pageTitle} </Text>
       </View>
 
@@ -65,7 +75,15 @@ const NewProductScreen = (props) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.taskButton} onPress={() => props.navigation.navigate("AdminProductScreen",{category:value,navigation:props.navigation})}>
+      <TouchableOpacity
+        style={styles.taskButton}
+        onPress={() =>
+          props.navigation.navigate("AdminProductScreen", {
+            category: value,
+            navigation: props.navigation,
+          })
+        }
+      >
         <Text style={styles.taskButtonText}> GO </Text>
       </TouchableOpacity>
     </View>
@@ -82,10 +100,11 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     // borderRadius:20,
     marginBottom: 40,
+    flexDirection: "row",
   },
   title: {
     textAlign: "center",
-    padding: 20,
+    padding: 25,
     fontSize: 20,
     fontStyle: "italic",
     fontWeight: "bold",
@@ -114,16 +133,16 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     backgroundColor: "#dfdfdf",
   },
-  boxContainer:{
-      alignItems:'center'
+  boxContainer: {
+    alignItems: "center",
   },
-  taskButton:{
+  taskButton: {
     width: 300,
     alignSelf: "center",
     borderRadius: 25,
     backgroundColor: "#206A5D",
     position: "absolute",
-     bottom: -500,
+    bottom: -500,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.7,

@@ -15,7 +15,7 @@ import fruits from "../../assets/fruitsD.png";
 import meat from "../../assets/meatD.png";
 import frozen from "../../assets/frozenD.png";
 import bakery from "../../assets/bakeryD.png";
-import personal from "../../assets/personalD.png";
+import dairy from "../../assets/personalD.png";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomTabNavigator from "../components/BottomTabNavigator";
@@ -29,7 +29,7 @@ const saleproduct = [
   "https://www.fda.gov/files/covid_foodretail_bestpractices_header.png",
 ];
 const deals = [
-  "https://www.reebee.com/blog/wp-content/uploads/2020/09/Deals-of-the-Yellow-Week-7.png",
+  "https://us.123rf.com/450wm/elenabsl/elenabsl1603/elenabsl160300017/54060490-grocery-shopping-discount-paper-shopping-bag-filled-with-vegetables-fruits-and-other-products.jpg?ver=6",
   "https://cdn.static-zoutons.com/images/originals/coupon-category/Grocery_Deals_1588267949.jpg",
   "https://www.baapoffers.com/uploads/grofers-get-30-cashback-on-grocery.jpg",
   "https://cdn.grabon.in/gograbon/images/web-images/uploads/1618548899692/groceries-offers.jpg",
@@ -274,11 +274,9 @@ const HomeS = ({ navigation }) => {
             </View>
 
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Personal", { type: "dairy" })
-              }
+              onPress={() => navigation.navigate("Personal", { type: "dairy" })}
             >
-              <Image style={styles.imagestyle} source={personal} />
+              <Image style={styles.imagestyle} source={dairy} />
             </TouchableOpacity>
 
             <View
@@ -432,6 +430,7 @@ const HomeS = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
+      <BottomTabNavigator navigation={navigation} />
     </View>
   );
 };
