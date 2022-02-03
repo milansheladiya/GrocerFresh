@@ -11,6 +11,7 @@ import {insertHandler} from "../Firebase/insert";
 import { auth } from "../Firebase/auth";
 import {serverTimestamp} from "firebase/firestore";
 import {deleteFields} from "../Firebase/delete";
+import emailjs from '@emailjs/browser';
 
 const CheckoutScreen = ({ navigation }) => {
   const [check1, setCheck1] = useState(true);
@@ -57,13 +58,35 @@ const CheckoutScreen = ({ navigation }) => {
       "deliveryMode":check1 ? "Home Delivery":"Pickup",
     }
 
-    let res = insertHandler(["orders"],data);
+      let res = insertHandler(["orders"],data);
 
-    const resDelete = deleteFields(["customers",auth.currentUser.uid],"cart");
+      const resDelete = deleteFields(["customers",auth.currentUser.uid],"cart");
+
+    
+
+  emailjs.init("user_eIChdvdhBmQ4eCww3BlyX");
+   
+  emailjs.send("service_u5you67","template_33rhgj7",{
+    to_name: "milan",
+    from_name: "grocerfresh",
+    deliveryMode:data.deliveryMode,
+    address: data.address,
+    total:data.total,
+    tax:data.tax,
+    grand_total:(parseFloat(data.total)+parseFloat(data.tax)),
+    reply_to: "grocerfresh@mailinator.com",
+    url:prodData.url,
+    name:prodData.name,
+    price:prodData.price,
+    quantity:prodData.quantity,
+    });
 
     console.log(data);
 
+    console.log(" ~~~~~~~~~~~~ Email has been sent ~~~~~~~~~~~~~~");
+
     navigation.navigate("DeliveryTimeScreen");
+
   }
 
   return (
