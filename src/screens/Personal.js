@@ -15,7 +15,7 @@ import {
 } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
 // import { personalData } from "../Data/data";
-import {readAllHandler} from "../Firebase/read";
+import { readAllHandler } from "../Firebase/read";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -28,23 +28,30 @@ const Personal = ({ navigation }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [filtered, setFiltered] = useState(false);
 
+  const add = () =>{
+    
+  }
+
   const pageType = navigation.state?.params?.type || "Personal";
   // if(pageType == 'cart'){
   //   pageData = []
   // }
 
   const productReadHandler = async () => {
-      const res = await readAllHandler(["grocery",pageType,pageType]);
-      console.log(pageType);
-      res.forEach((doc) => {
-          //console.log(doc.id, " => ", doc.data());
-          setPageData(pageData => [...pageData,{...doc.data(),id:doc.id,category:pageType}]);
-        });
+    const res = await readAllHandler(["grocery", pageType, pageType]);
+    console.log(pageType);
+    res.forEach((doc) => {
+      //console.log(doc.id, " => ", doc.data());
+      setPageData((pageData) => [
+        ...pageData,
+        { ...doc.data(), id: doc.id, category: pageType },
+      ]);
+    });
   };
 
   useEffect(() => {
     //const data = personalData[pageType] || [];
-    //const data = 
+    //const data =
     //setPageData(pageData);
     productReadHandler();
   }, [pageType]);
@@ -144,7 +151,7 @@ const Personal = ({ navigation }) => {
         }}
       >
         <TextInput
-          placeholder=" Search"
+          placeholder="Search for items"
           value={searchValue}
           onChangeText={(e) => setSearchValue(e)}
           style={{
@@ -246,7 +253,6 @@ const Personal = ({ navigation }) => {
                   marginBottom: 10,
                   width: 180,
                   height: 230,
-                 
                 }}
               >
                 <TouchableOpacity
@@ -254,6 +260,19 @@ const Personal = ({ navigation }) => {
                 >
                   <Image source={{ uri: data.url }} style={styles.imagestyle} />
                 </TouchableOpacity>
+
+                <Icon
+                  name="heart-circle"
+                  size={30}
+                  color={"red"}
+                  onPress={() => console.log("Fav item")}
+                  style={{
+                    marginHorizontal: 5,
+                    zIndex: 3,
+                    marginVertical: -106,
+                    marginBottom: 80,
+                  }}
+                />
 
                 <View
                   style={{
@@ -276,7 +295,6 @@ const Personal = ({ navigation }) => {
                       width: 150,
                       height: 50,
                       marginBottom: 60,
-                     
                     }}
                   >
                     <Text style={styles.textstyle}>{data.name}</Text>
@@ -289,7 +307,6 @@ const Personal = ({ navigation }) => {
                         justifyContent: "center",
                         marginTop: 2,
                         height: 40,
-                    
                       }}
                     >
                       <Icon
@@ -313,7 +330,6 @@ const Personal = ({ navigation }) => {
                         onPress={() => increment(`${data.id}`)}
                         color={"#1C6DD0"}
                       />
-                      <Icon name='heart' size={25}  color={"red"} style={{marginHorizontal: 2,}}/>
                     </View>
                   </View>
                 </View>
@@ -363,6 +379,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     backgroundColor: "#000",
     alignSelf: "center",
+    zIndex: -3,
   },
 
   textstyle: {

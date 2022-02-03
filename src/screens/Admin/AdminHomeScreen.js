@@ -1,24 +1,47 @@
-import React,{ useState} from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { signOutHandler } from "../../Firebase/auth";
 
-const AdminHomeScreen = props => {
-    
-    const [adminName,setAdminName] = useState("Milan");
+const AdminHomeScreen = (props) => {
+  const [adminName, setAdminName] = useState();
+
+  function showAlert() {
+    Alert.alert("Do you want to logout", "", [
+      {
+        text: "Yes",
+        onPress: () => {
+          signOutHandler();
+          props.navigation.navigate("LoginScreen");
+          Alert.alert("Message", "Logged out sucessfully");
+        },
+      },
+      {
+        text: "No",
+        onPress: () => props.navigation.navigate("AdminHomeScreen"),
+      },
+    ]);
+  }
 
   return (
-    <View>
+    <View style={{ paddingTop: 60 }}>
       <Text style={styles.title}>Welcome {adminName} (Admin)</Text>
 
       <View style={styles.boxLayout}>
-        <TouchableOpacity style={styles.button1} onPress={() => props.navigation.navigate("NewProductScreen")}>
+        <TouchableOpacity
+          style={styles.button1}
+          onPress={() => props.navigation.navigate("NewProductScreen")}
+        >
           <Text style={styles.buttonText}>New Product</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button2} onPress={() => props.navigation.navigate("CategoryScreen")}>
+        <TouchableOpacity
+          style={styles.button2}
+          onPress={() => props.navigation.navigate("CategoryScreen")}
+        >
           <Text style={styles.buttonText}>Modify Product</Text>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={() => {}}>
+      <TouchableOpacity style={styles.logoutButton} onPress={showAlert}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>
@@ -39,6 +62,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.7,
     shadowRadius: 5,
+    
   },
   boxLayout: {
     alignItems: "center",
@@ -89,21 +113,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   logoutButton: {
-      borderWidth:1,
-      width:300,
-      alignSelf:'center',
-      borderRadius:25,
-      backgroundColor:'#070D59',
-      position: 'absolute',
-      bottom: -200,
+    borderWidth: 1,
+    width: 300,
+    alignSelf: "center",
+    borderRadius: 25,
+    backgroundColor: "#070D59",
+    position: "absolute",
+    bottom: -200,
   },
-  logoutButtonText:{
-    fontWeight:'bold',
-    fontSize:30,
-    textAlign:'center',
-    padding:20,
-    color:'white',
-  }
+  logoutButtonText: {
+    fontWeight: "bold",
+    fontSize: 30,
+    textAlign: "center",
+    padding: 20,
+    color: "white",
+  },
 });
 
 export default AdminHomeScreen;
