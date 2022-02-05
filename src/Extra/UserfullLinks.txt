@@ -7,3 +7,14 @@ to send Email,
 https://www.emailjs.com/docs/sdk/send/
 
 Third party app to send email via email.js : https://www.fastmail.com/mail/Inbox/?u=96694006
+
+
+# GrocerFresh. --> step to merge
+
+git checkout main
+
+git pull origin BranchName
+
+git push
+
+---
