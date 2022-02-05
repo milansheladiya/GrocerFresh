@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import {facebookLogin} from "../Firebase/facebook";
 
 const OtherLoginsScreen = ({navigation}) => {
   return (
@@ -25,7 +26,7 @@ const OtherLoginsScreen = ({navigation}) => {
         <Text style={styles.googleText}>SignUp with Google</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.facebookBtn}>
+      <TouchableOpacity style={styles.facebookBtn} onPress={facebookLogin}>
         <Text style={styles.facebookText}>SignUp with Facebook</Text>
       </TouchableOpacity>
 
