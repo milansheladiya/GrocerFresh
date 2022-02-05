@@ -9,7 +9,6 @@ import {
 import { readAllHandler } from "../../Firebase/read";
 import DropDownPicker from "react-native-dropdown-picker";
 import Icon from "react-native-vector-icons/Ionicons";
-
 // Dropdown manu :  https://hossein-zare.github.io/react-native-dropdown-picker-website/docs/usage
 
 const NewProductScreen = (props) => {
@@ -44,7 +43,7 @@ const NewProductScreen = (props) => {
   // },[]);
 
   return (
-    <View>
+    <View style={{ paddingTop: 60 }}>
       <View style={styles.titleOuter}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate("AdminHomeScreen")}
@@ -95,14 +94,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.7,
     shadowRadius: 5,
     // borderRadius:20,
-    marginBottom: 20,
-    paddingTop: 40,
-    height: 100,
+    marginBottom: 40,
     flexDirection: "row",
   },
   title: {
     textAlign: "center",
-    padding: 20,
+    padding: 25,
     fontSize: 20,
     fontStyle: "italic",
     fontWeight: "bold",

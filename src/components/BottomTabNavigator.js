@@ -1,17 +1,45 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
+import { Dimensions, View, TouchableOpacity, Text } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 
-import HomeScreen from "../screens/HomeScreen";
-import CartScreen from "../screens/CartScreen";
-import AccountScreen from "../screens/AccountScreen";
-
-const Tab = createBottomTabNavigator();
-
-export default function BottomNavigation() {
+export default function BottomNavigation({ navigation }) {
+  const btnStyle = {
+    width: Dimensions.get("window").width / 2,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 65,
+  };
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
-      <Tab.Screen name="CartScreen" component={CartScreen} />
-      <Tab.Screen name="AccountScreen" component={AccountScreen} />
-    </Tab.Navigator>
+    <View
+      style={{
+        width: Dimensions.get("window").width,
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        display: "flex",
+        flexDirection: "row",
+        zIndex: 55,
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.7,
+        shadowRadius: 5,
+        backgroundColor: "lightblue",
+      }}
+    >
+      <TouchableOpacity
+        style={btnStyle}
+        onPress={() => navigation.navigate("HomeScreen")}
+      >
+        <Icon name="home" size={30} color={"#000000"} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={btnStyle}
+        onPress={() => navigation.navigate("AccountScreen")}
+      >
+        <Icon name="person-circle-outline" size={40} color={"#000000"} />
+      </TouchableOpacity>
+    </View>
   );
 }

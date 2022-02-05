@@ -1,15 +1,26 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
-import { isSignedInHandler, signOutHandler } from "../../Firebase/auth";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { signOutHandler } from "../../Firebase/auth";
 
 const AdminHomeScreen = (props) => {
-  const [adminName, setAdminName] = useState("");
+  const [adminName, setAdminName] = useState();
+
+  function showAlert() {
+    Alert.alert("Do you want to logout", "", [
+      {
+        text: "Yes",
+        onPress: () => {
+          signOutHandler();
+          props.navigation.navigate("LoginScreen");
+          Alert.alert("Message", "Logged out sucessfully");
+        },
+      },
+      {
+        text: "No",
+        onPress: () => props.navigation.navigate("AdminHomeScreen"),
+      },
+    ]);
+  }
 
   useEffect(() => {
     const res = isSignedInHandler();
@@ -25,15 +36,19 @@ const AdminHomeScreen = (props) => {
     Alert.alert("Do you want to logout", "", [
       {
         text: "Yes",
-        onPress: () => props.navigation.replace("LoginScreen") && signOutHandler(),
+        onPress: () =>
+          props.navigation.replace("LoginScreen") && signOutHandler(),
       },
-      { text: "No", onPress: () => props.navigation.navigate("AdminHomeScreen") },
+      {
+        text: "No",
+        onPress: () => props.navigation.navigate("AdminHomeScreen"),
+      },
     ]);
   };
 
   return (
     <View>
-      <Text style={styles.title}>Admin Login Page</Text>
+      <Text style={styles.title}>Admin Home</Text>
       <Text
         style={{
           fontSize: 20,
@@ -71,7 +86,7 @@ const AdminHomeScreen = (props) => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.logoutButton} onPress={logOutHandler}>
+      <TouchableOpacity style={styles.logoutButton} onPress={showAlert}>
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
     </View>

@@ -6,11 +6,15 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Dimensions,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { UpdateDocuments } from "../../Firebase/update";
 import { insertHandler } from "../../Firebase/insert";
-import Icons from "react-native-vector-icons/Ionicons";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
+
 // Dropdown manu :  https://hossein-zare.github.io/react-native-dropdown-picker-website/docs/usage
 
 const NewProductScreen = (props) => {
@@ -153,15 +157,16 @@ const NewProductScreen = (props) => {
   };
 
   return (
-    <View>
+    <View style={{ paddingTop: 40 }}>
       <View style={styles.titleOuter}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate("AdminHomeScreen")}
         >
-          <Icons
+          <Icon
             name="arrow-back"
             size={30}
-            style={{ marginTop: 15, margin: 10 }}
+            color={"black"}
+            style={{ margin: 10, padding: 11 }}
           />
         </TouchableOpacity>
         <Text style={styles.title}>{pageTitle} Product </Text>
@@ -238,7 +243,6 @@ const NewProductScreen = (props) => {
             value={url}
             onChangeText={setUrl}
             selectTextOnFocus={true}
-            multiline
           />
         </View>
         {pageTitle == "Modify" ? null : (
@@ -275,14 +279,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.7,
     shadowRadius: 5,
     // borderRadius:20,
-    marginBottom: 20,
-    paddingTop: 40,
-    height: 100,
+    marginBottom: 40,
     flexDirection: "row",
   },
   title: {
     textAlign: "center",
-    padding: 20,
+    padding: 25,
     fontSize: 20,
     fontStyle: "italic",
     fontWeight: "bold",
@@ -314,11 +316,12 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: "#206A5D",
     position: "absolute",
-    bottom: -200,
+    bottom: -300,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.7,
     shadowRadius: 5,
+    marginBottom: 50,
   },
   taskButtonText: {
     fontWeight: "bold",

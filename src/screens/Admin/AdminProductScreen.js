@@ -8,6 +8,7 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 import AdminProduct from "../../components/AdminProduct";
 import { readAllHandler } from "../../Firebase/read";
 import Icon from "react-native-vector-icons/Ionicons";
