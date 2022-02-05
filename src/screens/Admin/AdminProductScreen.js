@@ -11,10 +11,9 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import AdminProduct from "../../components/AdminProduct";
 import { readAllHandler } from "../../Firebase/read";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icons from "react-native-vector-icons/Ionicons";
 
 const { width, height } = Dimensions.get("screen");
-
 
 const AdminProductScreen = (props) => {
   const [pageTitle, setPageTitle] = useState(
@@ -43,15 +42,12 @@ const AdminProductScreen = (props) => {
   }, [firstRender]);
 
   return (
-    <View style={{ flex: 1,
-      width: width,
-      height: height,
-      }}>
+    <View style={{ flex: 1, width: width, height: height }}>
       <View style={styles.titleOuter}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate("CategoryScreen")}
         >
-          <Icon
+          <Icons
             name="arrow-back"
             size={30}
             style={{ margin: 10, marginTop: 15 }}
@@ -61,16 +57,17 @@ const AdminProductScreen = (props) => {
         <Text style={styles.title}>{pageTitle} </Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-        <FlatList
-          data={prodData}
-          horizontal={false}
-          numColumns={2}
-          keyExtractor={(item) => item.id}
-          renderItem={(item) => (
-            <AdminProduct item={item} navigation={props.navigation} />
-          )}
-        /></View>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+          <FlatList
+            data={prodData}
+            horizontal={false}
+            numColumns={2}
+            keyExtractor={(item) => item.id}
+            renderItem={(item) => (
+              <AdminProduct item={item} navigation={props.navigation} />
+            )}
+          />
+        </View>
       </ScrollView>
     </View>
   );

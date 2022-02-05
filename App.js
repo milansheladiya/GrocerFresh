@@ -38,10 +38,10 @@ const navigator = createStackNavigator(
     AdminProductScreen: AdminProductScreen,
     Personal: Personal,
     AccountScreen: AccountScreen,
-    AdminOrderList:AdminOrderList
+    AdminOrderList: AdminOrderList,
   },
   {
-    initialRouteName: "HomeScreen",
+    initialRouteName: "LoginScreen",
     defaultNavigationOptions: {
       headerShown: false,
     },

@@ -64,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       <NavigationEvents
         onDidFocus={() => {
-          checkSigninHandler();
+          isSignedInHandler();
         }}
       />
       <Image
