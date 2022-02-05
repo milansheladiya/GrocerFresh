@@ -2,7 +2,7 @@ Task resposiblity
 
 ____________________________________________________________
 Milan : -
-~~~~~~~~~~~~~~~~~~~~~~~~~``
+~~~~~~~~~~~~~~~~~~~~~~~~~~``
 1) Screen design and Full functionality with firebase : 
     1) AdminHomePage,
     2) AdminOrderPage, 
@@ -25,7 +25,7 @@ Milan : -
 
 ______________________________________________________________
 Sahith : - 
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~``
 Home screen:
 1. Created a category view.
 2. Created a carousel Image view for viewing three images.
@@ -48,7 +48,8 @@ Admin Screens :
 
 ______________________________________________________
 Ravi : -
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+
 1)Login screen (design)
    a)login by email
    b)login with facebook and google
@@ -63,7 +64,7 @@ Ravi : -
 
 ________________________________________________________
 Nency :- 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
  
  1) Sorting Screen ( design )
  2) filter screen ( design )
