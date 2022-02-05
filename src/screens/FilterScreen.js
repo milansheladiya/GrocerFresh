@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  BackHandler,
 } from "react-native";
 import { Slider, Divider, CheckBox, Icon } from "react-native-elements";
 
@@ -20,25 +21,24 @@ const FilterScreen = ({ navigation }) => {
   const [CatCheck5, setCatCheck5] = useState(false);
   const [CatCheck6, setCatCheck6] = useState(false);
   const pageType = navigation.state?.params?.type || "Personal";
-  
-  const [filteredData,setFilteredData] = useState(navigation.getParam("fData"));
+
+  const [filteredData, setFilteredData] = useState(
+    navigation.getParam("fData")
+  );
 
   const prodData = navigation.getParam("pData");
 
   useEffect(() => {
-    console.log("filter ",filteredData);
-  },[filteredData]);
+    console.log("filter ", filteredData);
+  }, [filteredData]);
 
   const filterHandler = () => {
-    const tmp  = prodData.filter((data) => {
-       return minValue <= data.price && maxValue >= data.price
+    const tmp = prodData.filter((data) => {
+      return minValue <= data.price && maxValue >= data.price;
     });
     //console.log(tmp);
     setFilteredData(tmp);
-    
-  }
-
-
+  };
 
   return (
     <View style={(styles.container, styles.contentView)}>
@@ -165,7 +165,10 @@ const FilterScreen = ({ navigation }) => {
         /> */}
       </ScrollView>
 
-      <TouchableOpacity style={styles.button} onPress={filterHandler}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={("filterHandler" , {type : "pageType"} )}
+      >
         <Text>Apply </Text>
       </TouchableOpacity>
     </View>

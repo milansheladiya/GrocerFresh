@@ -43,8 +43,7 @@ const navigator = createStackNavigator(
   {
     initialRouteName: "LoginScreen",
     defaultNavigationOptions: {
-      title: "Grocer Fresh",
-      headerShown: true,
+      headerShown: false,
     },
   }
 );

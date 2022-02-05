@@ -8,13 +8,18 @@ import {
   Alert,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import {UpdateDocuments} from "../../Firebase/update";
-import {insertHandler} from "../../Firebase/insert";
+import { UpdateDocuments } from "../../Firebase/update";
+import { insertHandler } from "../../Firebase/insert";
+import Icons from "react-native-vector-icons/Ionicons";
 // Dropdown manu :  https://hossein-zare.github.io/react-native-dropdown-picker-website/docs/usage
 
 const NewProductScreen = (props) => {
-  const [pageTitle, setPageTitle] = useState(props.navigation.getParam('item')  == null ? "New": "Modify");
-  const [taskButton, setTaskButton] = useState(props.navigation.getParam('item')  == null ? "Add": "Modify");
+  const [pageTitle, setPageTitle] = useState(
+    props.navigation.getParam("item") == null ? "New" : "Modify"
+  );
+  const [taskButton, setTaskButton] = useState(
+    props.navigation.getParam("item") == null ? "Add" : "Modify"
+  );
 
   // textinput field
   const [name, setName] = useState("");
@@ -24,10 +29,13 @@ const NewProductScreen = (props) => {
   const [typeOfProduct, setTypeOfProduct] = useState("");
   const [url, setUrl] = useState("");
 
-
-// for dropdown menu
+  // for dropdown menu
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(props.navigation.getParam('item')  == null ? "Fruits" : props.navigation.getParam('item').category);
+  const [value, setValue] = useState(
+    props.navigation.getParam("item") == null
+      ? "Fruits"
+      : props.navigation.getParam("item").category
+  );
   const [items, setItems] = useState([
     { label: "Fruits", value: "Fruits" },
     { label: "bakeryFood", value: "bakeryFood" },
@@ -38,90 +46,99 @@ const NewProductScreen = (props) => {
   ]);
 
   useEffect(() => {
-    if(pageTitle === "Modify")
-    {
+    if (pageTitle === "Modify") {
       fillProductDataHandler();
     }
-  },[]);
+  }, []);
 
   const fillProductDataHandler = () => {
-    setName(props.navigation.getParam('item').name);
-    setPrice(props.navigation.getParam('item').price.toString());
-    setQuantity(props.navigation.getParam('item').quantity.toString());
-    setRating(props.navigation.getParam('item').ratings.toString());
-    setTypeOfProduct(props.navigation.getParam('item').type);
-    setUrl(props.navigation.getParam('item').url);
+    setName(props.navigation.getParam("item").name);
+    setPrice(props.navigation.getParam("item").price.toString());
+    setQuantity(props.navigation.getParam("item").quantity.toString());
+    setRating(props.navigation.getParam("item").ratings.toString());
+    setTypeOfProduct(props.navigation.getParam("item").type);
+    setUrl(props.navigation.getParam("item").url);
   };
 
   const taskHandler = async () => {
-
-    if(pageTitle === "New")
-    {
-      if(validateHandler())
-      {
+    if (pageTitle === "New") {
+      if (validateHandler()) {
         console.log("new");
-        const res = await insertHandler(["grocery",value,value],collectHandler());
-        if(res)
-        {
+        const res = await insertHandler(
+          ["grocery", value, value],
+          collectHandler()
+        );
+        if (res) {
           Alert.alert("Product added successfully!");
-           clearFieldHandler();
-        }
-        else
-        {
+          clearFieldHandler();
+        } else {
           Alert.alert("Something went wrong!");
         }
       }
-    }
-    else
-    {
-      const category = props.navigation.getParam('item').category;
+    } else {
+      const category = props.navigation.getParam("item").category;
       const NewData = {
-        description : props.navigation.getParam('item').description,
-        hasOffer:props.navigation.getParam('item').hasOffer,
-        isAddedToCart:props.navigation.getParam('item').isAddedToCart,
-        isFavorite:props.navigation.getParam('item').isFavorite,
-        name:name,
-        price:price,
-        quantity:quantity,
-        ratings:rating,
-        type:typeOfProduct,
-        url:url,
-      }
+        description: props.navigation.getParam("item").description,
+        hasOffer: props.navigation.getParam("item").hasOffer,
+        isAddedToCart: props.navigation.getParam("item").isAddedToCart,
+        isFavorite: props.navigation.getParam("item").isFavorite,
+        name: name,
+        price: price,
+        quantity: quantity,
+        ratings: rating,
+        type: typeOfProduct,
+        url: url,
+      };
 
-      props.navigation.getParam('item').name=name;
-      props.navigation.getParam('item').price=price;
-      props.navigation.getParam('item').quantity=quantity;
-      props.navigation.getParam('item').ratings=rating;
-      props.navigation.getParam('item').type=typeOfProduct;
-      props.navigation.getParam('item').url=url;
+      props.navigation.getParam("item").name = name;
+      props.navigation.getParam("item").price = price;
+      props.navigation.getParam("item").quantity = quantity;
+      props.navigation.getParam("item").ratings = rating;
+      props.navigation.getParam("item").type = typeOfProduct;
+      props.navigation.getParam("item").url = url;
 
-      await UpdateDocuments(["grocery",category,category,props.navigation.getParam('item').id],NewData);
+      await UpdateDocuments(
+        ["grocery", category, category, props.navigation.getParam("item").id],
+        NewData
+      );
       console.log("Update Done");
       props.navigation.goBack();
     }
   };
 
   const validateHandler = () => {
-    if(name === null || name === "" || price === null || price === "" || quantity === null || quantity === "" || rating === null || rating === "" || typeOfProduct === null || typeOfProduct === "" || url === null || url === "")
-    {
+    if (
+      name === null ||
+      name === "" ||
+      price === null ||
+      price === "" ||
+      quantity === null ||
+      quantity === "" ||
+      rating === null ||
+      rating === "" ||
+      typeOfProduct === null ||
+      typeOfProduct === "" ||
+      url === null ||
+      url === ""
+    ) {
       Alert.alert("All Field mush be filled!");
       return false;
     }
     return true;
-  }
+  };
 
   const collectHandler = () => {
     const NewData = {
-      description : "Fresh item",
-      hasOffer:false,
-      isAddedToCart:false,
-      isFavorite:false,
-      name:name,
-      price:price,
-      quantity:quantity,
-      ratings:rating,
-      type:typeOfProduct,
-      url:url,
+      description: "Fresh item",
+      hasOffer: false,
+      isAddedToCart: false,
+      isFavorite: false,
+      name: name,
+      price: price,
+      quantity: quantity,
+      ratings: rating,
+      type: typeOfProduct,
+      url: url,
     };
     return NewData;
   };
@@ -138,11 +155,19 @@ const NewProductScreen = (props) => {
   return (
     <View>
       <View style={styles.titleOuter}>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("AdminHomeScreen")}
+        >
+          <Icons
+            name="arrow-back"
+            size={30}
+            style={{ marginTop: 15, margin: 10 }}
+          />
+        </TouchableOpacity>
         <Text style={styles.title}>{pageTitle} Product </Text>
       </View>
 
       <View>
-
         <View style={styles.inputfieldOuter}>
           <Text style={styles.inputfieldText}> Name </Text>
           <TextInput
@@ -216,21 +241,21 @@ const NewProductScreen = (props) => {
             multiline
           />
         </View>
-        { pageTitle == "Modify" ? null :  (
-        <View style={styles.inputfieldOuter} >
-          <Text style={styles.inputfieldText}> Category </Text>
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            style={styles.categoryMenu}
-            textStyle={styles.categoryText}
-            containerStyle={styles.cetegoryContainer}
-          />
-        </View>
+        {pageTitle == "Modify" ? null : (
+          <View style={styles.inputfieldOuter}>
+            <Text style={styles.inputfieldText}> Category </Text>
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              style={styles.categoryMenu}
+              textStyle={styles.categoryText}
+              containerStyle={styles.cetegoryContainer}
+            />
+          </View>
         )}
       </View>
 
@@ -250,7 +275,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.7,
     shadowRadius: 5,
     // borderRadius:20,
-    marginBottom: 40,
+    marginBottom: 20,
+    paddingTop: 40,
+    height: 100,
+    flexDirection: "row",
   },
   title: {
     textAlign: "center",
@@ -259,6 +287,8 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     fontWeight: "bold",
     color: "#FAEEE7",
+    justifyContent: "space-between",
+    marginHorizontal: "20%",
   },
   inputfieldOuter: {
     flexDirection: "row",
@@ -297,22 +327,21 @@ const styles = StyleSheet.create({
     padding: 15,
     color: "white",
   },
-  categoryMenu:{
-      width:240,
-      height:40,
-      backgroundColor: '#fafafa',
+  categoryMenu: {
+    width: 240,
+    height: 40,
+    backgroundColor: "#fafafa",
     //   marginLeft:10,
   },
-  categoryText:{
-      textAlign:'center',
-      fontSize:20
+  categoryText: {
+    textAlign: "center",
+    fontSize: 20,
   },
-  cetegoryContainer:{
-    width:240,
-    marginLeft:10,
-    backgroundColor:'#dfdfdf',
-  }
-  
+  cetegoryContainer: {
+    width: 240,
+    marginLeft: 10,
+    backgroundColor: "#dfdfdf",
+  },
 });
 
 export default NewProductScreen;

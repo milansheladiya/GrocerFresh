@@ -231,7 +231,7 @@ const Personal = ({ navigation }) => {
           justifyContent: "flex-start",
           zIndex: -1,
           position: "relative",
-          paddingTop: 40,
+          paddingTop: 60,
         }}
       >
         <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>

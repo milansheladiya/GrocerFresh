@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,92 +7,78 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Dimensions,
 } from "react-native";
-import {signInHandler,isSignedInHandler,auth,signOutHandler} from '../Firebase/auth';
-import {readAllWithId} from "../Firebase/read";
+import {
+  signInHandler,
+  isSignedInHandler,
+  auth,
+  signOutHandler,
+} from "../Firebase/auth";
+import { readAllWithId } from "../Firebase/read";
 import { NavigationEvents } from "react-navigation";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isAdmin,setIsAdmin] = useState(null);
-  const [userName,setUserName] = useState('');
+  const [isAdmin, setIsAdmin] = useState(null);
+  const [userName, setUserName] = useState("");
 
   useEffect(async () => {
     checkSigninHandler();
-  },[isAdmin]);
+  }, [isAdmin]);
 
   const isItAdmin = async () => {
-    try{
-    const res = await readAllWithId(["customers",auth.currentUser.uid]);
-     console.log(res.data().isAdmin, "-------- inside    Login --------");
-     setIsAdmin(res.data().isAdmin);
-     setUserName(res.data().name);
-    }catch(err)
-    {
+    try {
+      const res = await readAllWithId(["customers", auth.currentUser.uid]);
+      console.log(res.data().isAdmin, "-------- inside    Login --------");
+      setIsAdmin(res.data().isAdmin);
+      setUserName(res.data().name);
+    } catch (err) {
       console.log(err.message);
     }
-  }
+  };
 
   const checkSigninHandler = async () => {
-    if(await isSignedInHandler())
-    {
+    if (await isSignedInHandler()) {
       isItAdmin();
-      if(isAdmin === null)
-        {
-
-        }
-        else if(isAdmin)
-      {
-          // if user admin
-          console.log("  Admin  ");
+      if (isAdmin === null) {
+      } else if (isAdmin) {
+        // if user admin
+        console.log("  Admin  ");
         navigation.navigate("AdminHomeScreen");
-
-      }    
-      else if (!isAdmin)
-      {
+      } else if (!isAdmin) {
         navigation.navigate("HomeScreen");
       }
-    }
-    else
-    {
+    } else {
       console.log("User were not logged in!");
     }
   };
 
   useEffect(() => {
-    if(isAdmin === null)
-    {
-        console.log("null");
-    }
-    else if(isAdmin)
-    {
+    if (isAdmin === null) {
+      console.log("null");
+    } else if (isAdmin) {
       console.log("Admin");
       navigation.navigate("AdminHomeScreen");
-    }
-    else if(!isAdmin)
-    {
+    } else if (!isAdmin) {
       navigation.navigate("HomeScreen");
     }
-  },[isAdmin]);
+  }, [isAdmin]);
 
   const sinInOperator = async () => {
     await signOutHandler();
-      const res = await signInHandler(email,password);
-      console.log("------is Loggedin ----- : ",res);
-      //setIsAdmin(null);
-      if(res)
-      {
-        console.log("Is Admin : ============ " , isAdmin);
-        isItAdmin();
-        
-      }
-      else
-      {
-        console.log("Wrong credentials ");
-        Alert.alert("Message", "Wrong credentials!");
-      }
-  }
+    const res = await signInHandler(email, password);
+    console.log("------is Loggedin ----- : ", res);
+    //setIsAdmin(null);
+    if (res) {
+      console.log("Is Admin : ============ ", isAdmin);
+      isItAdmin();
+    } else {
+      console.log("Wrong credentials ");
+      Alert.alert("Message", "Wrong credentials!");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -159,10 +145,10 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    height: "100%",
+    height: Dimensions.get("screen").height,
+    width: Dimensions.get("screen").width,
   },
   img: {
     marginBottom: 10,

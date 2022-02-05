@@ -9,6 +9,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from "react-native";
 import VegesP from "../../assets/VegesH.png";
 import fruits from "../../assets/fruitsD.png";
@@ -19,9 +20,11 @@ import personal from "../../assets/personalD.png";
 import Icon from "react-native-vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomTabNavigator from "../components/BottomTabNavigator";
-import {auth,signOutHandler} from "../Firebase/auth";
+import { auth, signOutHandler } from "../Firebase/auth";
 
 const { width, height } = Dimensions.get("screen");
+
+const Diary = ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOaBSfqvv6-8QQ2m3hpxLMXGoL16cv-TjyMw&usqp=CAU"];
 
 const saleproduct = [
   "https://i.ytimg.com/vi/aRS2WPiExQQ/maxresdefault.jpg",
@@ -29,7 +32,6 @@ const saleproduct = [
   "https://www.fda.gov/files/covid_foodretail_bestpractices_header.png",
 ];
 const deals = [
-  "https://www.reebee.com/blog/wp-content/uploads/2020/09/Deals-of-the-Yellow-Week-7.png",
   "https://cdn.static-zoutons.com/images/originals/coupon-category/Grocery_Deals_1588267949.jpg",
   "https://www.baapoffers.com/uploads/grofers-get-30-cashback-on-grocery.jpg",
   "https://cdn.grabon.in/gograbon/images/web-images/uploads/1618548899692/groceries-offers.jpg",
@@ -45,7 +47,9 @@ const HomeS = ({ navigation }) => {
 
   const onchange = (nativeEvent) => {
     if (nativeEvent) {
-      const slider = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+      const slider = Math.ceil(
+        nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width
+      );
       if (slider != activeImage) {
         setActiveImage(slider);
       }
@@ -53,9 +57,14 @@ const HomeS = ({ navigation }) => {
   };
 
   const logOutHandler = () => {
-     signOutHandler();
-     navigation.navigate("LoginScreen");
-  }
+    Alert.alert("Do you want to logout", "", [
+      {
+        text: "Yes",
+        onPress: () => navigation.replace("LoginScreen") && signOutHandler(),
+      },
+      { text: "No", onPress: () => navigation.navigate("HomeScreen") },
+    ]);
+  };
 
   return (
     <View
@@ -74,21 +83,21 @@ const HomeS = ({ navigation }) => {
           // justifyContent: "flex-start",
           zIndex: -1,
           position: "relative",
-          paddingTop: 30,
-          justifyContent:'space-around'
+          paddingTop: 40,
+          justifyContent: "space-around",
         }}
       >
-        <TouchableOpacity style={{padding:5}} onPress={logOutHandler}>
+        <TouchableOpacity style={{ padding: 5 }} onPress={logOutHandler}>
           <Icon
             name="log-out"
             size={30}
-            color={"#F90716"}
-            style={{marginLeft:15 }}
+            color={"#000000"}
+            style={{ marginLeft: 20 }}
           />
         </TouchableOpacity>
         <Text
           style={{
-             width: Dimensions.get("window").width-30,
+            width: Dimensions.get("window").width - 30,
             marginHorizontal: "auto",
             // marginVertical: 5,
             paddingVertical: 6,
@@ -104,12 +113,15 @@ const HomeS = ({ navigation }) => {
           Grocer Fresh
         </Text>
 
-        <TouchableOpacity style={{padding:5}} onPress={() => navigation.navigate("CartScreen")}>
+        <TouchableOpacity
+          style={{ padding: 5 }}
+          onPress={() => navigation.navigate("CartScreen")}
+        >
           <Icon
             name="ios-cart"
             size={30}
             color={"black"}
-            style={{ marginRight:20}}
+            style={{ marginRight: 20 }}
           />
         </TouchableOpacity>
       </View>
@@ -274,11 +286,9 @@ const HomeS = ({ navigation }) => {
             </View>
 
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Personal", { type: "dairy" })
-              }
+              onPress={() => navigation.navigate("Personal", { type: "dairy" })}
             >
-              <Image style={styles.imagestyle} source={personal} />
+              <Image style={styles.imagestyle} source={Diary} />
             </TouchableOpacity>
 
             <View

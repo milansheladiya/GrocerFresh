@@ -1,40 +1,72 @@
-import React,{ useEffect, useState} from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import {isSignedInHandler,signOutHandler} from "../../Firebase/auth";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { isSignedInHandler, signOutHandler } from "../../Firebase/auth";
 
-const AdminHomeScreen = props => {
-    
-    const [adminName,setAdminName] = useState("Milan");
+const AdminHomeScreen = (props) => {
+  const [adminName, setAdminName] = useState("");
 
-    useEffect(() => {
-      const res = isSignedInHandler();
-      if(!res)
+  useEffect(() => {
+    const res = isSignedInHandler();
+    if (!res) {
+      console.log("Admin not logged in---------->");
+      logOutHandler();
+    } else {
+      console.log("Admin logged in ~~~~~~~~~~~~~~>");
+    }
+  }, []);
+
+  const logOutHandler = () => {
+    Alert.alert("Do you want to logout", "", [
       {
-        console.log("Admin not logged in---------->");
-        logOutHandler();
-      }
-      else{
-        console.log("Admin logged in ~~~~~~~~~~~~~~>");
-      }
-    },[]);
-
-    const logOutHandler = () => {
-      signOutHandler();
-      props.navigation.navigate("LoginScreen");
-   }
+        text: "Yes",
+        onPress: () => props.navigation.replace("LoginScreen") && signOutHandler(),
+      },
+      { text: "No", onPress: () => props.navigation.navigate("AdminHomeScreen") },
+    ]);
+  };
 
   return (
     <View>
-      <Text style={styles.title}>Welcome {adminName} (Admin)</Text>
-
+      <Text style={styles.title}>Admin Login Page</Text>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: "500",
+          margin: 10,
+          marginTop: 50,
+          marginHorizontal: 50,
+          color: "#C02F1D",
+          shadowColor: "black",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.3,
+          shadowRadius: 5,
+        }}
+      >
+        Welcome to Admin Login
+      </Text>
       <View style={styles.boxLayout}>
-        <TouchableOpacity style={styles.button1} onPress={() => props.navigation.navigate("NewProductScreen")}>
+        <TouchableOpacity
+          style={styles.button1}
+          onPress={() => props.navigation.navigate("NewProductScreen")}
+        >
           <Text style={styles.buttonText}>New Product</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button2} onPress={() => props.navigation.navigate("CategoryScreen")}>
+        <TouchableOpacity
+          style={styles.button2}
+          onPress={() => props.navigation.navigate("CategoryScreen")}
+        >
           <Text style={styles.buttonText}>Modify Product</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button1} onPress={() => props.navigation.navigate("AdminOrderList")}>
+        <TouchableOpacity
+          style={styles.button1}
+          onPress={() => props.navigation.navigate("AdminOrderList")}
+        >
           <Text style={styles.buttonText}>Order List</Text>
         </TouchableOpacity>
       </View>
@@ -49,26 +81,27 @@ const AdminHomeScreen = props => {
 const styles = StyleSheet.create({
   title: {
     textAlign: "center",
-    padding: 20,
     fontSize: 20,
     fontStyle: "italic",
     fontWeight: "bold",
     color: "#FAEEE7",
     backgroundColor: "#325288",
-    margin: 20,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.7,
     shadowRadius: 5,
+    top: 0,
+    height: 100,
+    paddingTop: 50,
   },
   boxLayout: {
     alignItems: "center",
-    flexDirection: "column",
+    flexDirection: "row",
     justifyContent: "space-around",
     margin: 20,
-    marginVertical: 10,
+    marginVertical: "10%",
     padding: 10,
-    height: 500,
+    height: 200,
     backgroundColor: "#F7F6F2",
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
@@ -78,13 +111,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     // flexWrap:'wrap',
     // justifyContent: 'center',
-    // alignItems: 'center'
+    // alignItems: 'center',
+    marginBottom: 10,
   },
   button1: {
     padding: 20,
     backgroundColor: "#C62A88",
-    width: 130,
-    height: 130,
+    width: 100,
+    height: 100,
     borderRadius: 15,
     alignSelf: "center",
     justifyContent: "center",
@@ -96,8 +130,8 @@ const styles = StyleSheet.create({
   button2: {
     padding: 20,
     backgroundColor: "#02475E",
-    width: 130,
-    height: 130,
+    width: 100,
+    height: 100,
     borderRadius: 15,
     alignSelf: "center",
     justifyContent: "center",
@@ -107,27 +141,27 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 15,
     textAlign: "center",
     color: "#FEF5ED",
     fontWeight: "bold",
   },
   logoutButton: {
-      borderWidth:1,
-      width:300,
-      alignSelf:'center',
-      borderRadius:25,
-      backgroundColor:'#070D59',
-      position: 'absolute',
-      bottom: -100,
+    borderWidth: 1,
+    width: 200,
+    alignSelf: "center",
+    borderRadius: 25,
+    backgroundColor: "#070D59",
+    position: "absolute",
+    bottom: "-50%",
   },
-  logoutButtonText:{
-    fontWeight:'bold',
-    fontSize:30,
-    textAlign:'center',
-    padding:20,
-    color:'white',
-  }
+  logoutButtonText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    textAlign: "center",
+    padding: 20,
+    color: "white",
+  },
 });
 
 export default AdminHomeScreen;
