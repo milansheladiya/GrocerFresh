@@ -44,7 +44,12 @@ const HomeS = ({ navigation }) => {
   const [deal, setDeal] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
 
+  try{
   console.log("User Id : ", auth.currentUser.uid);
+  }catch(error){
+    signOutHandler();
+    navigation.replace("LoginScreen");
+  }
 
   const onchange = (nativeEvent) => {
     if (nativeEvent) {

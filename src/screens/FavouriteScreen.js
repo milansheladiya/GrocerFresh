@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import FavoriteItem from "../components/FavoriteItem";
-import {Fruits} from '../Data/data';
+import {personalData} from '../Data/data';
 
 const FavouriteScreen = () => {
   return (
@@ -20,7 +20,7 @@ const FavouriteScreen = () => {
       <Text style={{color:'#9A0680', fontSize:30, fontStyle:'italic'}}> Favourite Items </Text>
 
       <FlatList
-        data={Fruits}
+        data={personalData[1]}
         keyExtractor={(item) => item.id}
         renderItem={(item) => <FavoriteItem item={item}/>}
         />

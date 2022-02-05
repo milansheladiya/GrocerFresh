@@ -41,7 +41,7 @@ const navigator = createStackNavigator(
     AdminOrderList: AdminOrderList,
   },
   {
-    initialRouteName: "LoginScreen",
+    initialRouteParams: "OtherLoginScreen",
     defaultNavigationOptions: {
       headerShown: false,
     },
