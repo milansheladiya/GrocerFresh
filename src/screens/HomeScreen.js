@@ -44,7 +44,12 @@ const HomeS = ({ navigation }) => {
   const [deal, setDeal] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
 
+  try{
   console.log("User Id : ", auth.currentUser.uid);
+  }catch(error){
+    signOutHandler();
+    navigation.replace("LoginScreen");
+  }
 
   const onchange = (nativeEvent) => {
     if (nativeEvent) {
@@ -88,12 +93,11 @@ const HomeS = ({ navigation }) => {
           justifyContent: "space-around",
         }}
       >
-        <TouchableOpacity style={{ padding: 5 }} onPress={logOutHandler}>
+        <TouchableOpacity style={{ padding:5,marginLeft:20 }} onPress={logOutHandler}>
           <Icon
             name="log-out"
             size={30}
             color={"#000000"}
-            style={{ marginLeft: 20 }}
           />
         </TouchableOpacity>
         <Text

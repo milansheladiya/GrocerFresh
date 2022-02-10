@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { signOutHandler } from "../../Firebase/auth";
+import { signOutHandler,isSignedInHandler } from "../../Firebase/auth";
 
 const AdminHomeScreen = (props) => {
   const [adminName, setAdminName] = useState();
@@ -53,7 +53,8 @@ const AdminHomeScreen = (props) => {
         style={{
           fontSize: 20,
           fontWeight: "500",
-          margin: 10,
+          // margin: 10,
+          alignSelf:'center',
           marginTop: 50,
           marginHorizontal: 50,
           color: "#C02F1D",

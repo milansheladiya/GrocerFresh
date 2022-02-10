@@ -124,7 +124,7 @@ const AdminOrderList = (props) => {
                         <Text
                           style={{
                             fontWeight: "bold",
-                            color: "#FC4F4Fs",
+                            color: "#FC4F4F",
                             textAlign: "right",
                           }}
                         >
