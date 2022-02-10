@@ -15,11 +15,11 @@ const CartProducts = ({ item, cartProd, setcartProd,CartPriceReducer }) => {
     tmpProd.forEach((element) => {
       delete element["description"];
       delete element["description"];
-      delete element["name"];
+      // delete element["name"];
       delete element["hasOffer"];
       delete element["isAddedToCart"];
       delete element["isFavorite"];
-      delete element["price"];
+      // delete element["price"];
       delete element["ratings"];
       delete element["type"];
       delete element["url"];

@@ -21,7 +21,7 @@ const AdminProduct = (props) => {
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} key={id}>
       <Image
         style={styles.img}
         source={{

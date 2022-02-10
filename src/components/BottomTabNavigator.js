@@ -2,9 +2,9 @@ import React from "react";
 import { Dimensions, View, TouchableOpacity, Text } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-export default function BottomNavigation({ navigation }) {
+export default function BottomNavigation({ navigation,style }) {
   const btnStyle = {
-    width: Dimensions.get("window").width / 2,
+    width: Dimensions.get("window").width / 3,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
@@ -26,6 +26,7 @@ export default function BottomNavigation({ navigation }) {
         shadowOpacity: 0.7,
         shadowRadius: 5,
         backgroundColor: "lightblue",
+        ...style
       }}
     >
       <TouchableOpacity
@@ -34,6 +35,14 @@ export default function BottomNavigation({ navigation }) {
       >
         <Icon name="home" size={30} color={"#000000"} />
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={btnStyle}
+        onPress={() => navigation.navigate("FavouriteScreen")}
+      >
+        <Icon name="heart-circle-outline" size={40} color={"red"} />
+      </TouchableOpacity>
+
       <TouchableOpacity
         style={btnStyle}
         onPress={() => navigation.navigate("AccountScreen")}

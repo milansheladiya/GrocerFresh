@@ -93,12 +93,11 @@ const HomeS = ({ navigation }) => {
           justifyContent: "space-around",
         }}
       >
-        <TouchableOpacity style={{ padding: 5 }} onPress={logOutHandler}>
+        <TouchableOpacity style={{ padding:5,marginLeft:20 }} onPress={logOutHandler}>
           <Icon
             name="log-out"
             size={30}
             color={"#000000"}
-            style={{ marginLeft: 20 }}
           />
         </TouchableOpacity>
         <Text

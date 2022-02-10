@@ -83,7 +83,7 @@ const SignupScreen = ({ navigation }) => {
           <Icon
             name="arrow-back"
             size={30}
-            color={"black"}
+            color="black"
             style={{ margin: 10 }}
           />
         </TouchableOpacity>

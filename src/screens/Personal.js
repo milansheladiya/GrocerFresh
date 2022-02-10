@@ -56,14 +56,20 @@ const Personal = ({ navigation }) => {
 
   const getCartDataFromFirebase = async () => {
     let carts = await readAllWithId(["customers", auth.currentUser.uid]);
+    
     //---console.log("second......");
-    carts.data().cart.forEach((doc) => {
-      //console.log("Each cart details :" ,doc);
-      setCartList((cartList) => [...cartList, { ...doc }]);
-    });
+    if(carts.data().cart !== undefined)
+    {
+        carts.data().cart.forEach((doc) => {
+        //console.log("Each cart details :" ,doc);
+        setCartList((cartList) => [...cartList, { ...doc }]);
+      });
+    }
 
-
+    if(carts.data().favorite)
+    {
       setFavList(carts.data().favorite);
+    }
     //synchronizCart();
   };
 
@@ -110,7 +116,8 @@ const Personal = ({ navigation }) => {
     await UpdateDocuments(["customers", auth.currentUser.uid], {
       cart: cartList,
     });
-    Alert.alert("Cart Message", "Cart has been updated!");
+    navigation.navigate("CartScreen");
+    //Alert.alert("Cart Message", "Cart has been updated!");
   };
 
   const add = () =>{
@@ -266,7 +273,8 @@ const Personal = ({ navigation }) => {
           {pageType}
         </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate("CartScreen")}
+          onPress={() => {
+            navigation.navigate("CartScreen");}}
           style={{ paddingLeft: 10 }}
         >
           <Icon
@@ -356,7 +364,7 @@ const Personal = ({ navigation }) => {
           <Text
             style={{
               fontSize: 20,
-              position: "fixed",
+              position: "relative",
               margin: 5,
               marginLeft: "70%",
               fontWeight: "500",
@@ -403,19 +411,6 @@ const Personal = ({ navigation }) => {
                 >
                   <Image source={{ uri: data.url }} style={styles.imagestyle} />
                 </TouchableOpacity>
-
-                <Icon
-                  name="heart-circle"
-                  size={30}
-                  color={"red"}
-                  onPress={() => console.log("Fav item")}
-                  style={{
-                    marginHorizontal: 5,
-                    zIndex: 3,
-                    marginVertical: -106,
-                    marginBottom: 80,
-                  }}
-                />
 
                 <View
                   style={{

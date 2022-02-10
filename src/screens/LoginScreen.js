@@ -24,6 +24,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   useEffect(async () => {
+    console.log("calling");
     if (await isSignedInHandler()) {
       const adminUser = await isAdminUser();
       if (adminUser) {
@@ -85,7 +86,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.inputView}>
         <TextInput
           placeholder="Email"
-          placeholderTextColor="#f003f5c"
+          // placeholderTextColor="#f003f5c"
           value={email}
           onChangeText={setEmail}
           style={styles.textInput}
@@ -94,7 +95,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.inputView}>
         <TextInput
           placeholder="Password"
-          placeholderTextColor="#f003f5c"
+          // placeholderTextColor="#f003f5c"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
@@ -102,7 +103,7 @@ const LoginScreen = ({ navigation }) => {
         />
       </View>
 
-      <TouchableOpacity onPress={navigation.navigate('OtherLoginScreen')}>
+      <TouchableOpacity onPress={ () => {navigation.navigate("OtherLoginScreen")}}>
         <Text style={styles.forgotButton}>Forgot Password?</Text>
       </TouchableOpacity>
 

@@ -45,30 +45,32 @@ const CartScreen = ({ navigation }) => {
     const uid = await getUserIdHandler();
     const carts = await readAllWithId(["customers", uid]);
 
-    for (let i = 0; i < carts.data().cart.length; i++) {
-      let res = await readAllWithId([
-        "grocery",
-        carts.data().cart[i].category,
-        carts.data().cart[i].category,
-        carts.data().cart[i].id,
-      ]);
+    if (carts.data().cart !== undefined) {
+      for (let i = 0; i < carts.data().cart.length; i++) {
+        let res = await readAllWithId([
+          "grocery",
+          carts.data().cart[i].category,
+          carts.data().cart[i].category,
+          carts.data().cart[i].id,
+        ]);
 
-      setCartTotal(
-        (cartTotal) =>
-          parseFloat(cartTotal) +
-          parseFloat(res.data().price) *
-            parseFloat(carts.data().cart[i].quantity)
-      );
-      // console.log(res.data());
-      setcartProd((cartProd) => [
-        ...cartProd,
-        {
-          ...res.data(),
-          id: carts.data().cart[i].id,
-          quantity: carts.data().cart[i].quantity,
-          category: carts.data().cart[i].category,
-        },
-      ]);
+        setCartTotal(
+          (cartTotal) =>
+            parseFloat(cartTotal) +
+            parseFloat(res.data().price) *
+              parseFloat(carts.data().cart[i].quantity)
+        );
+        // console.log(res.data());
+        setcartProd((cartProd) => [
+          ...cartProd,
+          {
+            ...res.data(),
+            id: carts.data().cart[i].id,
+            quantity: carts.data().cart[i].quantity,
+            category: carts.data().cart[i].category,
+          },
+        ]);
+      }
     }
   };
 
@@ -91,10 +93,9 @@ const CartScreen = ({ navigation }) => {
           zIndex: -1,
           position: "relative",
           paddingTop: 30,
-
         }}
       >
-        <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={30} style={{ margin: 20 }} />
         </TouchableOpacity>
         <Fontisto
@@ -104,26 +105,33 @@ const CartScreen = ({ navigation }) => {
           style={{
             padding: 10,
             marginBottom: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: "25%"
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: "25%",
           }}
         />
       </View>
 
-<ScrollView style={{backgroundColor: 'white', width: Dimensions.get("window").width, height: height}}>
-      <FlatList
-        data={cartProd}
-        keyExtractor={(item) => item.id}
-        renderItem={(item) => (
-          <CartProducts
-            item={item}
-            cartProd={cartProd}
-            setcartProd={setcartProd}
-            CartPriceReducer={CartPriceReducer}
-          />
-        )}
-      /></ScrollView>
+      <View
+        style={{
+          backgroundColor: "white",
+          width: Dimensions.get("window").width,
+          height: height,
+        }}
+      >
+        <FlatList
+          data={cartProd}
+          keyExtractor={(item) => item.id}
+          renderItem={(item) => (
+            <CartProducts
+              item={item}
+              cartProd={cartProd}
+              setcartProd={setcartProd}
+              CartPriceReducer={CartPriceReducer}
+            />
+          )}
+        />
+      </View>
 
       <TouchableOpacity
         onPress={() =>

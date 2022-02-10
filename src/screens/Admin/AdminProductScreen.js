@@ -56,7 +56,7 @@ const AdminProductScreen = (props) => {
 
         <Text style={styles.title}>{pageTitle} </Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <View showsVerticalScrollIndicator={false}>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <FlatList
             data={prodData}
@@ -68,7 +68,7 @@ const AdminProductScreen = (props) => {
             )}
           />
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
