@@ -167,7 +167,7 @@ const FilterScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={("filterHandler" , {type : "pageType"} )}
+        onPress={filterHandler}
       >
         <Text>Apply </Text>
       </TouchableOpacity>
