@@ -73,4 +73,12 @@ Nency :-
  5) Contribution to planning app
  6) DeliveryTimeScreen Functionality
  7) setup firebase firebase functionality with local function to reuse
+
+
+
+----------------------------------------
+** Starter packages **
+npm install react-navigation
+expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view 
+npm install react-navigation-stack @react-navigation/core @react-navigation/native
  
